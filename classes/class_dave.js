@@ -1,8 +1,11 @@
+
+
 class Dave {
-    constructor(posx, posy, colorInHex) {
+    constructor(posx, posy, colorInHex, id) {
 
         this.position = [posx, posy];
         this.color = colorInHex;
+        this.id = id;
 
         let NamesListIndex = getRandomInt(0, namesList.length);
         this.name = namesList[NamesListIndex];
@@ -29,6 +32,18 @@ class Dave {
 
         console.log("I am ", this.name, "!");
 
+    }
+    getID(){
+        return this.id;
+    }
+    getColor(){
+        return this.color;
+    }
+    getPosition(){
+        return this.position;
+    }
+    getName(){
+        return this.name;
     }
 }
 
