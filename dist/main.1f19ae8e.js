@@ -140,7 +140,15 @@ var move = /*#__PURE__*/function () {
 
   _createClass(move, [{
     key: "moveInDirection",
-    value: function moveInDirection(currX, currY) {
+    value: function moveInDirection(currX, currY, sk) {
+      console.log(sk.HALF_PI);
+
+      if (currX <= 1 || currX >= 719) {
+        this.direction.rotate(sk.HALF_PI);
+      } else if (currY <= 1 || currY >= 399) {
+        this.direction.rotate(sk.HALF_PI);
+      }
+
       var posx = currX + this.direction.x;
       var posy = currY + this.direction.y;
       return [posx, posy];
@@ -28867,7 +28875,8 @@ var Dave = /*#__PURE__*/function () {
     _classCallCheck(this, Dave);
 
     this.position = [posx, posy];
-    this.color = colorInHex;
+    this.colors = ['rgb(0,0,255)', 'rgb(0,0,0)', 'rgb(255,255,255)', 'rgb(255,0,0)', 'rgb(0,255,0)'];
+    this.randColor = Math.floor(Math.random() * 5 + 0);
     this.id = id;
     this.abilities = abilities;
     var NamesListIndex = getRandomInt(0, namesList.length);
@@ -28892,9 +28901,10 @@ var Dave = /*#__PURE__*/function () {
     key: "draw",
     value: function draw(sk) {
       //call ability:
-      this.position = this.abilities[0].moveInDirection(this.position[0], this.position[1]);
-      console.log(this.position);
-      sk.circle(this.position[0], this.position[1], 10);
+      this.position = this.abilities[0].moveInDirection(this.position[0], this.position[1], sk); //console.log(this.position);
+
+      var circle = sk.circle(this.position[0], this.position[1], 10);
+      circle.fill(sk.color(this.colors[this.randColor]));
     }
   }, {
     key: "getID",
@@ -29165,6 +29175,9 @@ $(document).ready(function () {
         sk.background(134);
 
         _uiGenerator.swarm.draw(sk);
+
+        sk.line(2, 2, 2, 400);
+        sk.line(2, 2, 720, 2);
       }
     };
   };
@@ -29199,7 +29212,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56972" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55885" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
