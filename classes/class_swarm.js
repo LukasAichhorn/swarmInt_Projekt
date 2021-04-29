@@ -10,7 +10,7 @@ export class Swarm {
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {
-            let newDave = new Dave(this.randPos(1,400),this.randPos(1,720),"#328fa8",i,[new move()]);
+            let newDave = new Dave(this.randPos(1,720),this.randPos(1,400),"#328fa8",i,[new move()]);
             this.bots.push(newDave);
             
         }
@@ -27,9 +27,9 @@ export class Swarm {
         return val;
        
     }
-    draw(){
+    draw(sk){
         this.bots.forEach((bot)=>{
-            bot.draw();
+            bot.draw(sk);
         });
     }
     addBot(bot) {

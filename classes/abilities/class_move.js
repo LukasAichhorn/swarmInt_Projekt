@@ -13,5 +13,7 @@ export class move {
         let posy = currY + this.direction.y;
         return [posx,posy];
     }
+    
+
 
 }

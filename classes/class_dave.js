@@ -1,4 +1,4 @@
-
+import  'p5';
 
 export class Dave {
     constructor(posx, posy, colorInHex, id, abilities) {
@@ -35,11 +35,11 @@ export class Dave {
 
     }
 
-    draw(){
+    draw(sk){
         //call ability:
          this.position = this.abilities[0].moveInDirection(this.position[0],this.position[1]);
          console.log(this.position);
-        circle(this.position[0], this.position[1], 10);
+        sk.circle(this.position[0], this.position[1], 10);
     }
     getID(){
         return this.id;

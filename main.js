@@ -1,6 +1,6 @@
 import { Swarm } from "./classes/class_swarm";
 import { addToogleBtn, renderMenue, renderSubmitSection,setupData,UI,FORM,swarm } from "./UI/ui-generator";
-
+import  'p5';
 
 
 
@@ -31,21 +31,40 @@ const canvas_height = 400;
   renderSubmitSection(UI,"Start Simulation","success");
 
 
-  window.setup = ()=>{
-    console.log("setup function");
-    let cnv =createCanvas(canvas_width, canvas_height);
-    cnv.parent("Canvas-container");
-  background(134); // Set line drawing color to white
-  frameRate(30);
+//   window.setup = ()=>{
+//     console.log("setup function");
+//     let cnv =createCanvas(canvas_width, canvas_height);
+//     cnv.parent("Canvas-container");
+//   background(134); // Set line drawing color to white
+//   frameRate(30);
 
-  };
+//   };
 
- window.draw = ()=>{
-     if(swarm!= null){
-        background(134);
-        swarm.draw();
-     }  
+//  window.draw = ()=>{
+//      if(swarm!= null){
+//         background(134);
+//         swarm.draw();
+//      }  
+// }
+
+let s = (sk) => {    
+    sk.setup = () =>{
+        console.log("setup function");
+        let cnv =sk.createCanvas(canvas_width, canvas_height);
+        cnv.parent("Canvas-container");
+      sk.background(134); // Set line drawing color to white
+      sk.frameRate(30);
+    }
+
+    sk.draw = () =>{
+        if(swarm!= null){
+            sk.background(134);
+            swarm.draw(sk);
+         }  
+    }
 }
+const P5 = new p5(s);
+
 
 
 });//onload end 
