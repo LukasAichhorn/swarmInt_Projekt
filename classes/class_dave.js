@@ -1,11 +1,12 @@
 
 
 export class Dave {
-    constructor(posx, posy, colorInHex, id) {
+    constructor(posx, posy, colorInHex, id, abilities) {
 
         this.position = [posx, posy];
         this.color = colorInHex;
         this.id = id;
+        this.abilities=abilities;
 
         let NamesListIndex = getRandomInt(0, namesList.length);
         this.name = namesList[NamesListIndex];
@@ -33,7 +34,11 @@ export class Dave {
         console.log("I am ", this.name, "!");
 
     }
+
     draw(){
+        //call ability:
+         this.position = this.abilities[0].moveInDirection(this.position[0],this.position[1]);
+         console.log(this.position);
         circle(this.position[0], this.position[1], 10);
     }
     getID(){
