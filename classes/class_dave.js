@@ -1,6 +1,6 @@
 
 
-class Dave {
+export class Dave {
     constructor(posx, posy, colorInHex, id) {
 
         this.position = [posx, posy];
@@ -32,6 +32,9 @@ class Dave {
 
         console.log("I am ", this.name, "!");
 
+    }
+    draw(){
+        circle(this.position[0], this.position[1], 10);
     }
     getID(){
         return this.id;
