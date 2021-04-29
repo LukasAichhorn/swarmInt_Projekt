@@ -4,7 +4,8 @@ export class Dave {
     constructor(posx, posy, colorInHex, id, abilities) {
 
         this.position = [posx, posy];
-        this.color = colorInHex;
+        this.colors = ['rgb(0,0,255)', 'rgb(0,0,0)', 'rgb(255,255,255)', 'rgb(255,0,0)', 'rgb(0,255,0)'];
+        this.randColor = Math.floor((Math.random() * 5) + 0);
         this.id = id;
         this.abilities=abilities;
 
@@ -37,9 +38,10 @@ export class Dave {
 
     draw(sk){
         //call ability:
-         this.position = this.abilities[0].moveInDirection(this.position[0],this.position[1]);
-         console.log(this.position);
-        sk.circle(this.position[0], this.position[1], 10);
+         this.position = this.abilities[0].moveInDirection(this.position[0],this.position[1], sk);
+         //console.log(this.position);
+        let circle = sk.circle(this.position[0], this.position[1], 10);
+        circle.fill(sk.color(this.colors[this.randColor]));
     }
     getID(){
         return this.id;

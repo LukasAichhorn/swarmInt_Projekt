@@ -60,6 +60,8 @@ let s = (sk) => {
         if(swarm!= null){
             sk.background(134);
             swarm.draw(sk);
+            sk.line(2, 2, 2, 400);
+            sk.line(2, 2, 720, 2);
          }  
     }
 }
