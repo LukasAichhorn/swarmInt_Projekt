@@ -1,28 +1,18 @@
+import { Swarm } from "../classes/class_swarm";
+
+
 // A $( document ).ready() block.
-const setupData = ["alog1", "algo2", "ALGO3"];
+export const setupData = ["alog1", "algo2", "ALGO3"];
+export const UI = $("#UI-container");
+export var swarm;
+let form = $("<form></form>")
+  .attr("id", "UI-Form")
+  .attr("class","bg-light border rounded");
+
+  export const FORM  = form;   
 var SimSetup = [];
 
 
-$(document).ready(function () {
-    
-    var ToogleID = "toogle-sb";
-
-  console.log("Hy from the Ui-generator");
-  const UI = $("#UI-container");
-  const FORM = $("<form></form>")
-  .attr("id", "UI-Form")
-  .attr("class","bg-light border rounded");
-  console.log(FORM);
-
-  addToogleBtn(UI, "sandbox", "primary", "toogle-sb", "Sandbox Mode", false);
-  addToogleBtn(UI, "predefinded", "primary", "toogle-pd", "predefined values",false);
-
-  UI.append(FORM);
-  renderMenue(FORM,ToogleID,setupData);
-  
-  renderSubmitSection(UI,"Start Simulation","success");
-  
-});
 
 
 
@@ -31,8 +21,7 @@ $(document).ready(function () {
 
 
 
-
-function renderMenue(FORM,ToogleID,data) {
+export function renderMenue(FORM,ToogleID,data) {
     console.log(data);
     if (ToogleID == "toogle-sb") {
     FORM.empty();
@@ -63,7 +52,7 @@ function renderMenue(FORM,ToogleID,data) {
  
 }
 
-function addInputElem(target, fieldName, labelText, type, placeholder) {
+export function addInputElem(target, fieldName, labelText, type, placeholder) {
   let s =
     '<div class="m-3">\
     <label for="' +
@@ -82,7 +71,7 @@ function addInputElem(target, fieldName, labelText, type, placeholder) {
 
   target.append(s);
 }
-function addSelectElem(target, optValues, id) {
+export function addSelectElem(target, optValues, id) {
   let c = $("<div />").attr("class", "m-3");
   let root = $("<select></select>").attr("class", "form-select").attr("id", id);
 
@@ -94,7 +83,7 @@ function addSelectElem(target, optValues, id) {
   target.append(c.append(root));
 }
 
-function addToogleBtn(target, name, type, id, labelText, checked) {
+export function addToogleBtn(target, name, type, id, labelText, checked) {
   let b1 = $("<input />")
     .attr("type", "radio")
     .attr("class", "btn-check ")
@@ -106,10 +95,9 @@ function addToogleBtn(target, name, type, id, labelText, checked) {
   }
 
   b1.on("click", function () {
-    ToogleID = id;
+    let ToogleID = $(this).attr("id");
     
-    console.log("toogle button with id: " + ToogleID + " was pressed");
-    let FORM = $("#UI-Form"); 
+    console.log("toogle button with id: " + ToogleID + " was pressed"); 
     renderMenue(FORM,ToogleID,setupData);
   });
 
@@ -121,27 +109,39 @@ function addToogleBtn(target, name, type, id, labelText, checked) {
   target.append(b1);
   target.append(label);
 }
-function renderSubmitSection(target,text,btnType){
+
+function initSim(simSetup){
+  let botCount = simSetup[0]["value"];
+  console.log("botcount: "+ botCount);
+  swarm = new Swarm(parseInt(botCount),"none");
+  
+  console.log(swarm);
+  }
+
+export function renderSubmitSection(target,text,btnType){
     let c = $("<div />").attr("class"," mt-1 p-1 bg-light border rounded");
     let b =$("<button />")
     .attr("type","button")
     .attr("class","btn btn-"+btnType)
     .text(text);   
     b.on("click",function(){
-        SimSetup =$("#UI-Form").serializeArray();
-        console.group(SimSetup);
+        let simSetup =$("#UI-Form").serializeArray();
+        console.log(simSetup);
+        initSim(simSetup);
     });
     c.append(b);
 
     target.append(c);
 }
 
-function renderAbilitySection(){
+export function renderAbilitySection(){
 
 
 }
-function createSetupArray(){
+export function createSetupArray(){
 
 }
+
+
 
 
