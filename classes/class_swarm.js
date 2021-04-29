@@ -1,4 +1,5 @@
 
+import { move } from "./abilities/class_move";
 import { Dave } from "./class_dave";
 
 export class Swarm {
@@ -9,7 +10,7 @@ export class Swarm {
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {
-            let newDave = new Dave(this.randPos(1,400),this.randPos(1,720),"#328fa8",i);
+            let newDave = new Dave(this.randPos(1,400),this.randPos(1,720),"#328fa8",i,[new move()]);
             this.bots.push(newDave);
             
         }

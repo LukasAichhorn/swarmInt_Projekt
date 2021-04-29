@@ -42,6 +42,7 @@ const canvas_height = 400;
 
  window.draw = ()=>{
      if(swarm!= null){
+        background(134);
         swarm.draw();
      }  
 }

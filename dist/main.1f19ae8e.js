@@ -117,7 +117,41 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"classes/class_dave.js":[function(require,module,exports) {
+})({"classes/abilities/class_move.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.move = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var move = /*#__PURE__*/function () {
+  function move() {
+    _classCallCheck(this, move);
+
+    this.direction = p5.Vector.random2D();
+  }
+
+  _createClass(move, [{
+    key: "moveInDirection",
+    value: function moveInDirection(currX, currY) {
+      var posx = currX + this.direction.x;
+      var posy = currY + this.direction.y;
+      return [posx, posy];
+    }
+  }]);
+
+  return move;
+}();
+
+exports.move = move;
+},{}],"classes/class_dave.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -132,12 +166,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Dave = /*#__PURE__*/function () {
-  function Dave(posx, posy, colorInHex, id) {
+  function Dave(posx, posy, colorInHex, id, abilities) {
     _classCallCheck(this, Dave);
 
     this.position = [posx, posy];
     this.color = colorInHex;
     this.id = id;
+    this.abilities = abilities;
     var NamesListIndex = getRandomInt(0, namesList.length);
     this.name = namesList[NamesListIndex]; //Gewährleistung der "Uniquness" des Names mithilfe einer nachfolgenden Nummer
     //letzen Buchstaben von Namen 
@@ -159,6 +194,9 @@ var Dave = /*#__PURE__*/function () {
   _createClass(Dave, [{
     key: "draw",
     value: function draw() {
+      //call ability:
+      this.position = this.abilities[0].moveInDirection(this.position[0], this.position[1]);
+      console.log(this.position);
       circle(this.position[0], this.position[1], 10);
     }
   }, {
@@ -203,6 +241,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Swarm = void 0;
 
+var _class_move = require("./abilities/class_move");
+
 var _class_dave = require("./class_dave");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -220,7 +260,7 @@ var Swarm = /*#__PURE__*/function () {
     this.bots = [];
 
     for (var i = 0; i < numBots; i++) {
-      var newDave = new _class_dave.Dave(this.randPos(1, 400), this.randPos(1, 720), "#328fa8", i);
+      var newDave = new _class_dave.Dave(this.randPos(1, 400), this.randPos(1, 720), "#328fa8", i, [new _class_move.move()]);
       this.bots.push(newDave);
     }
 
@@ -278,7 +318,7 @@ var Swarm = /*#__PURE__*/function () {
 }();
 
 exports.Swarm = Swarm;
-},{"./class_dave":"classes/class_dave.js"}],"UI/ui-generator.js":[function(require,module,exports) {
+},{"./abilities/class_move":"classes/abilities/class_move.js","./class_dave":"classes/class_dave.js"}],"UI/ui-generator.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -410,6 +450,8 @@ $(document).ready(function () {
 
   window.draw = function () {
     if (_uiGenerator.swarm != null) {
+      background(134);
+
       _uiGenerator.swarm.draw();
     }
   };
@@ -442,7 +484,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60700" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55309" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
