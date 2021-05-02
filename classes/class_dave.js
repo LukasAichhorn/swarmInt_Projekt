@@ -4,10 +4,10 @@ export class Dave {
     constructor(posx, posy, colorInHex, id, abilities) {
 
         this.position = [posx, posy];
-        this.colors = ['rgb(0,0,255)', 'rgb(0,0,0)', 'rgb(255,255,255)', 'rgb(255,0,0)', 'rgb(0,255,0)'];
+        this.colors = colorInHex;
         this.randColor = Math.floor((Math.random() * 5) + 0);
         this.id = id;
-        this.abilities=abilities;
+        this.abilities = abilities;
 
         let NamesListIndex = getRandomInt(0, namesList.length);
         this.name = namesList[NamesListIndex];
@@ -37,11 +37,13 @@ export class Dave {
     }
 
     draw(sk){
+
         //call ability:
          this.position = this.abilities[0].moveInDirection(this.position[0],this.position[1], sk);
+
          //console.log(this.position);
         let circle = sk.circle(this.position[0], this.position[1], 10);
-        circle.fill(sk.color(this.colors[this.randColor]));
+        circle.fill(sk.color(this.colors));
     }
     getID(){
         return this.id;
@@ -123,5 +125,25 @@ var namesList = [
     "Sigi",
     "Beate",
     "Klenk",
-    "Mimi"
+    "Mimi",
+    "Rüdiger",
+    "Funny",
+    "Aslan",
+    "Ludwig",
+    "Wilhelm",
+    "Emmerich",
+    "Lutz",
+    "Simon",
+    "Simone",
+    "Ilse",
+    "Rachel",
+    "Ross",
+    "She-ra",
+    "Adora",
+    "Cornelia",
+    "Francis",
+    "Malcolm",
+    "Sugar Pie",
+    "Nadine",
+    "Ridi"
 ];
