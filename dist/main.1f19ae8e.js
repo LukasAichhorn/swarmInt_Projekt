@@ -141,8 +141,7 @@ var move = /*#__PURE__*/function () {
   _createClass(move, [{
     key: "moveInDirection",
     value: function moveInDirection(currX, currY, sk) {
-      console.log(sk.HALF_PI);
-
+      //console.log(sk.HALF_PI);
       if (currX <= 1 || currX >= 719) {
         this.direction.rotate(sk.HALF_PI);
       } else if (currY <= 1 || currY >= 399) {
@@ -29212,7 +29211,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50020" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51414" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

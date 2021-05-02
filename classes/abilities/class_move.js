@@ -9,7 +9,7 @@ export class move {
 
 
     moveInDirection(currX,currY,sk){
-        console.log(sk.HALF_PI);
+        //console.log(sk.HALF_PI);
         if(currX <= 1 || currX >= 719){
             this.direction.rotate(sk.HALF_PI);
             
