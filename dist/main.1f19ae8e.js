@@ -141,8 +141,7 @@ var move = /*#__PURE__*/function () {
   _createClass(move, [{
     key: "moveInDirection",
     value: function moveInDirection(currX, currY, sk) {
-      console.log(sk.HALF_PI);
-
+      //console.log(sk.HALF_PI);
       if (currX <= 1 || currX >= 719) {
         this.direction.rotate(sk.HALF_PI);
       } else if (currY <= 1 || currY >= 399) {
@@ -28875,7 +28874,7 @@ var Dave = /*#__PURE__*/function () {
     _classCallCheck(this, Dave);
 
     this.position = [posx, posy];
-    this.colors = ['rgb(0,0,255)', 'rgb(0,0,0)', 'rgb(255,255,255)', 'rgb(255,0,0)', 'rgb(0,255,0)'];
+    this.colors = colorInHex;
     this.randColor = Math.floor(Math.random() * 5 + 0);
     this.id = id;
     this.abilities = abilities;
@@ -28904,7 +28903,7 @@ var Dave = /*#__PURE__*/function () {
       this.position = this.abilities[0].moveInDirection(this.position[0], this.position[1], sk); //console.log(this.position);
 
       var circle = sk.circle(this.position[0], this.position[1], 10);
-      circle.fill(sk.color(this.colors[this.randColor]));
+      circle.fill(sk.color(this.colors));
     }
   }, {
     key: "getID",
@@ -28939,8 +28938,83 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var namesList = ["Dave", "Lukas", "Yasmine", "Johannes", "JaCob", "Doris", "Paolo", "Angela Merkel", "Hugo", "Mortimer", "Timothy", "Sandra", "Maria", "Magdalena", "Ingrid", "Nelly", "JaKob", "Sophie", "Gerald", "Frau Huber", "Babsi", "Roland", "Klaus", "Norbert", "Scooter", "Orlando", "Virginia Woolf", "Queen Elisabeth", "Nora", "Tom", "Bimbolino", "Ronaldinho", "Flupsi", "Betti", "Jesus", "John Schnee", "Aragorn", "Gimli", "Prince Harry", "Maria Magdalena", "Scotty", "Bulli", "Betti", "Rudi", "Herwig", "Verena", "Wolfgang", "Stefan", "Stephanie", "Alex", "Ferdl", "Franzl", "Sissi", "Göthe", "Pam", "Sigi", "Beate", "Klenk", "Mimi"];
-},{"p5":"node_modules/p5/lib/p5.min.js"}],"classes/class_swarm.js":[function(require,module,exports) {
+var namesList = ["Dave", "Lukas", "Yasmine", "Johannes", "JaCob", "Doris", "Paolo", "Angela Merkel", "Hugo", "Mortimer", "Timothy", "Sandra", "Maria", "Magdalena", "Ingrid", "Nelly", "JaKob", "Sophie", "Gerald", "Frau Huber", "Babsi", "Roland", "Klaus", "Norbert", "Scooter", "Orlando", "Virginia Woolf", "Queen Elisabeth", "Nora", "Tom", "Bimbolino", "Ronaldinho", "Flupsi", "Betti", "Jesus", "John Schnee", "Aragorn", "Gimli", "Prince Harry", "Maria Magdalena", "Scotty", "Bulli", "Betti", "Rudi", "Herwig", "Verena", "Wolfgang", "Stefan", "Stephanie", "Alex", "Ferdl", "Franzl", "Sissi", "Göthe", "Pam", "Sigi", "Beate", "Klenk", "Mimi", "Rüdiger", "Funny", "Aslan", "Ludwig", "Wilhelm", "Emmerich", "Lutz", "Simon", "Simone", "Ilse", "Rachel", "Ross", "She-ra", "Adora", "Cornelia", "Francis", "Malcolm", "Sugar Pie", "Nadine", "Ridi"];
+},{"p5":"node_modules/p5/lib/p5.min.js"}],"classes/abilities/class_color_generator.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.color_generator = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var color_generator = /*#__PURE__*/function () {
+  function color_generator() {
+    _classCallCheck(this, color_generator);
+
+    //WILD COLOR 
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+
+    this.wild_color = color; //RANDOM COLOR
+
+    this.color_array = ["#d19c1f", "#8f1c0d", "#c6e82e", "#29612f", "#146096"]; //orange, rot, limette, dunkelgrün, blau
+
+    this.random_color = this.color_array[Math.floor(Math.random() * 5)];
+  }
+
+  _createClass(color_generator, [{
+    key: "getWildColor",
+    value: function getWildColor() {
+      return this.wild_color;
+    }
+  }, {
+    key: "getRandomColor",
+    value: function getRandomColor() {
+      return this.random_color;
+    } //EINZELNE FARBEN
+
+  }, {
+    key: "getOrange",
+    value: function getOrange() {
+      return this.color_array[0];
+    }
+  }, {
+    key: "getRed",
+    value: function getRed() {
+      return this.color_array[1];
+    }
+  }, {
+    key: "getYellow",
+    value: function getYellow() {
+      return this.color_array[2];
+    }
+  }, {
+    key: "getGreen",
+    value: function getGreen() {
+      return this.color_array[3];
+    }
+  }, {
+    key: "getBlue",
+    value: function getBlue() {
+      return this.color_array[4];
+    }
+  }]);
+
+  return color_generator;
+}();
+
+exports.color_generator = color_generator;
+},{}],"classes/class_swarm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28951,6 +29025,8 @@ exports.Swarm = void 0;
 var _class_move = require("./abilities/class_move");
 
 var _class_dave = require("./class_dave");
+
+var _class_color_generator = require("./abilities/class_color_generator");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28967,7 +29043,9 @@ var Swarm = /*#__PURE__*/function () {
     this.bots = [];
 
     for (var i = 0; i < numBots; i++) {
-      var newDave = new _class_dave.Dave(this.randPos(1, 720), this.randPos(1, 400), "#328fa8", i, [new _class_move.move()]);
+      var color = new _class_color_generator.color_generator(); // WILD color ist aktiviert
+
+      var newDave = new _class_dave.Dave(this.randPos(1, 720), this.randPos(1, 400), color.getWildColor(), i, [new _class_move.move()]);
       this.bots.push(newDave);
     }
 
@@ -29025,7 +29103,7 @@ var Swarm = /*#__PURE__*/function () {
 }();
 
 exports.Swarm = Swarm;
-},{"./abilities/class_move":"classes/abilities/class_move.js","./class_dave":"classes/class_dave.js"}],"UI/ui-generator.js":[function(require,module,exports) {
+},{"./abilities/class_move":"classes/abilities/class_move.js","./class_dave":"classes/class_dave.js","./abilities/class_color_generator":"classes/abilities/class_color_generator.js"}],"UI/ui-generator.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29212,7 +29290,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55885" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53486" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

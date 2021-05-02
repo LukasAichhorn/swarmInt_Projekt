@@ -1,6 +1,7 @@
 
 import { move } from "./abilities/class_move";
 import { Dave } from "./class_dave";
+import { color_generator } from "./abilities/class_color_generator";
 
 export class Swarm {
     
@@ -10,7 +11,11 @@ export class Swarm {
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {
-            let newDave = new Dave(this.randPos(1,720),this.randPos(1,400),"#328fa8",i,[new move()]);
+            let color = new color_generator;
+            
+
+            // WILD color ist aktiviert
+            let newDave = new Dave(this.randPos(1,720),this.randPos(1,400),color.getWildColor(),i,[new move()]);
             this.bots.push(newDave);
             
         }
