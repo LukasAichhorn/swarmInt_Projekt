@@ -8,12 +8,12 @@ export class Swarm {
 
     constructor(numBots, endConditions) {
         this.numBots = numBots;
+        let color = new color_generator; 
         //array type bots
         this.bots = [];
-        for (let i = 0; i < numBots; i++) {
-            let color = new color_generator;
-            
+        for (let i = 0; i < numBots; i++) {                      
 
+            
             // WILD color ist aktiviert
             let newDave = new Dave(this.randPos(1,720),this.randPos(1,400),color.getWildColor(),i,[new move()]);
             this.bots.push(newDave);
