@@ -28973,13 +28973,28 @@ var color_generator = /*#__PURE__*/function () {
   }
 
   _createClass(color_generator, [{
+    key: "shuffleColors",
+    value: function shuffleColors() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+
+      this.wild_color = color;
+      this.random_color = this.color_array[Math.floor(Math.random() * 5)];
+    }
+  }, {
     key: "getWildColor",
     value: function getWildColor() {
+      this.shuffleColors();
       return this.wild_color;
     }
   }, {
     key: "getRandomColor",
     value: function getRandomColor() {
+      this.shuffleColors();
       return this.random_color;
     } //EINZELNE FARBEN
 
@@ -29038,13 +29053,13 @@ var Swarm = /*#__PURE__*/function () {
   function Swarm(numBots, endConditions) {
     _classCallCheck(this, Swarm);
 
-    this.numBots = numBots; //array type bots
+    this.numBots = numBots;
+    var color = new _class_color_generator.color_generator(); //array type bots
 
     this.bots = [];
 
     for (var i = 0; i < numBots; i++) {
-      var color = new _class_color_generator.color_generator(); // WILD color ist aktiviert
-
+      // WILD color ist aktiviert
       var newDave = new _class_dave.Dave(this.randPos(1, 720), this.randPos(1, 400), color.getWildColor(), i, [new _class_move.move()]);
       this.bots.push(newDave);
     }
@@ -29290,7 +29305,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53486" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63703" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

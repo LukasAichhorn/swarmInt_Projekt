@@ -18,12 +18,27 @@ export class color_generator {
         this.random_color = this.color_array[Math.floor(Math.random() * 5)];
     }
 
+    shuffleColors(){
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+
+        for (var i = 0; i < 6; i++) 
+        {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        this.wild_color = color;
+
+        this.random_color = this.color_array[Math.floor(Math.random() * 5)];
+    }
+
 
     getWildColor(){        
+        this.shuffleColors();
         return this.wild_color;
     }
 
     getRandomColor(){        
+        this.shuffleColors();
         return this.random_color;
     }
 
