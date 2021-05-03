@@ -59,6 +59,7 @@ let s = (sk) => {
     sk.draw = () =>{
         if(swarm!= null){
             sk.background(134);
+            swarm.doAbilities(sk);
             swarm.draw(sk);
             sk.line(2, 2, 2, 400);
             sk.line(2, 2, 720, 2);

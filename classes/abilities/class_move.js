@@ -1,25 +1,32 @@
 
 export class move {
     
-    constructor(){
-        this.direction = p5.Vector.random2D();
-        
+    constructor(){              
 
     }
 
-
-    moveInDirection(currX,currY,sk){
+    moveInDirection(bot, sk){
         //console.log(sk.HALF_PI);
-        if(currX <= 1 || currX >= 719){
-            this.direction.rotate(sk.HALF_PI);
+        if(bot.position[0] <= 1 || bot.position[0] >= 719){
+            bot.direction.rotate(sk.HALF_PI);
             
         }
-        else if(currY <= 1 || currY >= 399){
-            this.direction.rotate(sk.HALF_PI);
+        else if(bot.position[1] <= 1 || bot.position[1] >= 399){
+            bot.direction.rotate(sk.HALF_PI);
             
         }
-        let posx = currX + this.direction.x;
-        let posy = currY + this.direction.y;
+        let posx = bot.position[0] + bot.direction.x;
+        let posy = bot.position[1] + bot.direction.y;
         return [posx,posy];
+    }
+
+    getRandomDirection(){        
+        return p5.Vector.random2D();
+    }
+
+
+    execute(bot, sk){  
+       var newPos = this.moveInDirection(bot, sk);
+       bot.position = newPos;
     }
 }

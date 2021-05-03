@@ -1,14 +1,16 @@
 import  'p5';
 
 export class Dave {
-    constructor(posx, posy, colorInHex, id, abilities) {
+
+    constructor(posx, posy, colorInHex, id, direction) {
 
         this.position = [posx, posy];
         this.colors = colorInHex;
         this.randColor = Math.floor((Math.random() * 5) + 0);
         this.id = id;
-        this.abilities = abilities;
+        //this.abilities = abilities;
 
+        this.direction = direction;
         let NamesListIndex = getRandomInt(0, namesList.length);
         this.name = namesList[NamesListIndex];
 
@@ -36,11 +38,7 @@ export class Dave {
 
     }
 
-    draw(sk){
-
-        //call ability:
-         this.position = this.abilities[0].moveInDirection(this.position[0],this.position[1], sk);
-
+    draw(sk){ 
          //console.log(this.position);
         let circle = sk.circle(this.position[0], this.position[1], 10);
         circle.fill(sk.color(this.colors));
@@ -58,6 +56,8 @@ export class Dave {
         return this.name;
     }
 }
+
+
 
 
 function getRandomInt(min, max) {

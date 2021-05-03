@@ -134,23 +134,32 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var move = /*#__PURE__*/function () {
   function move() {
     _classCallCheck(this, move);
-
-    this.direction = p5.Vector.random2D();
   }
 
   _createClass(move, [{
     key: "moveInDirection",
-    value: function moveInDirection(currX, currY, sk) {
+    value: function moveInDirection(bot, sk) {
       //console.log(sk.HALF_PI);
-      if (currX <= 1 || currX >= 719) {
-        this.direction.rotate(sk.HALF_PI);
-      } else if (currY <= 1 || currY >= 399) {
-        this.direction.rotate(sk.HALF_PI);
+      if (bot.position[0] <= 1 || bot.position[0] >= 719) {
+        bot.direction.rotate(sk.HALF_PI);
+      } else if (bot.position[1] <= 1 || bot.position[1] >= 399) {
+        bot.direction.rotate(sk.HALF_PI);
       }
 
-      var posx = currX + this.direction.x;
-      var posy = currY + this.direction.y;
+      var posx = bot.position[0] + bot.direction.x;
+      var posy = bot.position[1] + bot.direction.y;
       return [posx, posy];
+    }
+  }, {
+    key: "getRandomDirection",
+    value: function getRandomDirection() {
+      return p5.Vector.random2D();
+    }
+  }, {
+    key: "execute",
+    value: function execute(bot, sk) {
+      var newPos = this.moveInDirection(bot, sk);
+      bot.position = newPos;
     }
   }]);
 
@@ -28870,14 +28879,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Dave = /*#__PURE__*/function () {
-  function Dave(posx, posy, colorInHex, id, abilities) {
+  function Dave(posx, posy, colorInHex, id, direction) {
     _classCallCheck(this, Dave);
 
     this.position = [posx, posy];
     this.colors = colorInHex;
     this.randColor = Math.floor(Math.random() * 5 + 0);
-    this.id = id;
-    this.abilities = abilities;
+    this.id = id; //this.abilities = abilities;
+
+    this.direction = direction;
     var NamesListIndex = getRandomInt(0, namesList.length);
     this.name = namesList[NamesListIndex]; //Gewährleistung der "Uniquness" des Names mithilfe einer nachfolgenden Nummer
     //letzen Buchstaben von Namen 
@@ -28899,9 +28909,7 @@ var Dave = /*#__PURE__*/function () {
   _createClass(Dave, [{
     key: "draw",
     value: function draw(sk) {
-      //call ability:
-      this.position = this.abilities[0].moveInDirection(this.position[0], this.position[1], sk); //console.log(this.position);
-
+      //console.log(this.position);
       var circle = sk.circle(this.position[0], this.position[1], 10);
       circle.fill(sk.color(this.colors));
     }
@@ -29054,13 +29062,14 @@ var Swarm = /*#__PURE__*/function () {
     _classCallCheck(this, Swarm);
 
     this.numBots = numBots;
-    var color = new _class_color_generator.color_generator(); //array type bots
+    var color = new _class_color_generator.color_generator();
+    this.abilities = [new _class_move.move()]; //array type bots
 
     this.bots = [];
 
     for (var i = 0; i < numBots; i++) {
       // WILD color ist aktiviert
-      var newDave = new _class_dave.Dave(this.randPos(1, 720), this.randPos(1, 400), color.getWildColor(), i, [new _class_move.move()]);
+      var newDave = new _class_dave.Dave(this.randPos(1, 720), this.randPos(1, 400), color.getWildColor(), i, this.abilities[0].getRandomDirection());
       this.bots.push(newDave);
     }
 
@@ -29111,6 +29120,17 @@ var Swarm = /*#__PURE__*/function () {
       } else {
         this.taskCompleted = false;
       }
+    }
+  }, {
+    key: "doAbilities",
+    value: function doAbilities(sk) {
+      var _this = this;
+
+      this.bots.forEach(function (bot) {
+        _this.abilities.forEach(function (ability) {
+          ability.execute(bot, sk);
+        });
+      });
     }
   }]);
 
@@ -29267,6 +29287,8 @@ $(document).ready(function () {
       if (_uiGenerator.swarm != null) {
         sk.background(134);
 
+        _uiGenerator.swarm.doAbilities(sk);
+
         _uiGenerator.swarm.draw(sk);
 
         sk.line(2, 2, 2, 400);
@@ -29305,7 +29327,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63703" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64199" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
