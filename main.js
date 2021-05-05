@@ -1,6 +1,7 @@
 import { Swarm } from "./classes/class_swarm";
 import { addToogleBtn, renderMenue, renderSubmitSection,setupData,UI,FORM,swarm } from "./UI/ui-generator";
 import  'p5';
+import 'regenerator-runtime/runtime'
 
 
 
@@ -31,22 +32,6 @@ const canvas_height = 400;
   renderSubmitSection(UI,"Start Simulation","success");
 
 
-//   window.setup = ()=>{
-//     console.log("setup function");
-//     let cnv =createCanvas(canvas_width, canvas_height);
-//     cnv.parent("Canvas-container");
-//   background(134); // Set line drawing color to white
-//   frameRate(30);
-
-//   };
-
-//  window.draw = ()=>{
-//      if(swarm!= null){
-//         background(134);
-//         swarm.draw();
-//      }  
-// }
-
 let s = (sk) => {    
     sk.setup = () =>{
         console.log("setup function");
@@ -56,13 +41,15 @@ let s = (sk) => {
       sk.frameRate(30);
     }
 
-    sk.draw = () =>{
+    sk.draw =  async () =>{
         if(swarm!= null){
             sk.background(134);
-            swarm.doAbilities(sk);
-            swarm.draw(sk);
-            sk.line(2, 2, 2, 400);
-            sk.line(2, 2, 720, 2);
+            await swarm.setBotStates(sk);
+           await swarm.excecuteAbilities(sk);
+          swarm.draw(sk);
+            
+            //sk.line(2, 2, 2, 400);
+            //sk.line(2, 2, 720, 2);
          }  
     }
 }

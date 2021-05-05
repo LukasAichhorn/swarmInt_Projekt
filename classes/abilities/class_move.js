@@ -2,7 +2,7 @@
 export class move {
     
     constructor(){              
-
+    this.name = "move";
     }
 
     moveInDirection(bot, sk){
@@ -25,8 +25,15 @@ export class move {
     }
 
 
-    execute(bot, sk){  
+    execute(bot, sk){
+
+        if(bot.states.wall){
+            bot.direction.rotate(sk.HALF_PI);
+        }
        var newPos = this.moveInDirection(bot, sk);
        bot.position = newPos;
+    }
+    checkStates(){
+
     }
 }
