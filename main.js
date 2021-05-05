@@ -37,13 +37,13 @@ let s = (sk) => {
         console.log("setup function");
         let cnv =sk.createCanvas(canvas_width, canvas_height);
         cnv.parent("Canvas-container");
-      sk.background(134); // Set line drawing color to white
+      sk.background("#F9F9F9"); // Set line drawing color to white
       sk.frameRate(30);
     }
 
     sk.draw =  async () =>{
         if(swarm!= null){
-            sk.background(134);
+          sk.background("#F9F9F9");
 
         
           await swarm.setBotStates(sk);

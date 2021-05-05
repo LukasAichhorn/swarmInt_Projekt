@@ -8,6 +8,7 @@ export class Dave {
         this.colors = colorInHex;
         this.randColor = Math.floor((Math.random() * 5) + 0);
         this.id = id;
+        this.size = 10;
         this.states ={
             wall:false,
             colliding: false,
@@ -47,11 +48,11 @@ export class Dave {
          
          //set draw color to bots current color;
         sk.fill(this.colors);     
-        sk.circle(this.position[0], this.position[1], 10);
+        sk.circle(this.position[0], this.position[1], this.size);
         
         let s = this.name;
         sk.textSize(10);
-        sk.text(s,this.position[0],this.position[1]+10);
+        sk.text(s,this.position[0]- this.size ,this.position[1]- this.size);
         
         
 

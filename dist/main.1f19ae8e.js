@@ -28903,6 +28903,7 @@ var Dave = /*#__PURE__*/function () {
     this.colors = colorInHex;
     this.randColor = Math.floor(Math.random() * 5 + 0);
     this.id = id;
+    this.size = 10;
     this.states = {
       wall: false,
       colliding: false,
@@ -28933,10 +28934,10 @@ var Dave = /*#__PURE__*/function () {
     value: function draw(sk) {
       //set draw color to bots current color;
       sk.fill(this.colors);
-      sk.circle(this.position[0], this.position[1], 10);
+      sk.circle(this.position[0], this.position[1], this.size);
       var s = this.name;
       sk.textSize(10);
-      sk.text(s, this.position[0], this.position[1] + 10);
+      sk.text(s, this.position[0] - this.size, this.position[1] - this.size);
     }
   }, {
     key: "getID",
@@ -29939,14 +29940,14 @@ var CollisionTreeDetection = /*#__PURE__*/function () {
 
   _createClass(CollisionTreeDetection, [{
     key: "narrowDetection",
-    value: function narrowDetection(posx1, posy1, posx2, posy2) {
+    value: function narrowDetection(bot, otherBot, posx1, posy1, posx2, posy2) {
       var circle1 = {
-        radius: 8,
+        radius: bot.size / 2,
         x: posx1,
         y: posy1
       };
       var circle2 = {
-        radius: 8,
+        radius: otherBot.size / 2,
         x: posx2,
         y: posy2
       };
@@ -29981,8 +29982,8 @@ var CollisionTreeDetection = /*#__PURE__*/function () {
         //reset state
         if (notVisited.length >= 1) {
           notVisited.forEach(function (otherBot) {
-            if (_this.narrowDetection(bot.position[0], bot.position[1], otherBot.position[0], otherBot.position[1])) {
-              console.log("".concat(bot.name, " id:").concat(bot.id, " collided with ").concat(otherBot.name, " id:").concat(otherBot.id));
+            if (_this.narrowDetection(bot, otherBot, bot.position[0], bot.position[1], otherBot.position[0], otherBot.position[1])) {
+              //console.log(`${bot.name} id:${bot.id} collided with ${otherBot.name} id:${otherBot.id}`);
               bot.states.colliding = true;
               bot.states.collider = otherBot;
               otherBot.states.colliding = true;
@@ -30010,7 +30011,43 @@ var CollisionTreeDetection = /*#__PURE__*/function () {
 
 
 exports.CollisionTreeDetection = CollisionTreeDetection;
-},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js"}],"classes/class_swarm.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js"}],"classes/abilities/class_grow.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Grow = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Grow = /*#__PURE__*/function () {
+  function Grow() {
+    _classCallCheck(this, Grow);
+  }
+
+  _createClass(Grow, [{
+    key: "execute",
+    value: function execute(bot, sk) {
+      if (bot.states.colliding) {
+        console.log("grow");
+        bot.size = bot.size + 0.5;
+      }
+    }
+  }, {
+    key: "checkStates",
+    value: function checkStates(bots, bot) {}
+  }]);
+
+  return Grow;
+}();
+
+exports.Grow = Grow;
+},{}],"classes/class_swarm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30030,6 +30067,8 @@ var _class_colorChanger = require("./abilities/class_colorChanger");
 
 var _class_collosionTreeDetection = require("./abilities/class_collosionTreeDetection");
 
+var _class_grow = require("./abilities/class_grow");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -30042,7 +30081,7 @@ var Swarm = /*#__PURE__*/function () {
 
     this.numBots = numBots;
     var color = new _class_color_generator.color_generator();
-    this.abilities = [new _class_move.move(), new _class_wall_detector.WallDetector(), new _class_colorChanger.ColorChanger(), new _class_collosionTreeDetection.CollisionTreeDetection()]; //array type bots
+    this.abilities = [new _class_move.move(), new _class_wall_detector.WallDetector(), new _class_colorChanger.ColorChanger(), new _class_collosionTreeDetection.CollisionTreeDetection(), new _class_grow.Grow()]; //array type bots
 
     this.bots = [];
 
@@ -30128,7 +30167,7 @@ var Swarm = /*#__PURE__*/function () {
 }();
 
 exports.Swarm = Swarm;
-},{"./abilities/class_move":"classes/abilities/class_move.js","./class_dave":"classes/class_dave.js","./abilities/class_color_generator":"classes/abilities/class_color_generator.js","./abilities/class_wall_detector":"classes/abilities/class_wall_detector.js","./abilities/class_colorChanger":"classes/abilities/class_colorChanger.js","./abilities/class_collosionTreeDetection":"classes/abilities/class_collosionTreeDetection.js"}],"UI/ui-generator.js":[function(require,module,exports) {
+},{"./abilities/class_move":"classes/abilities/class_move.js","./class_dave":"classes/class_dave.js","./abilities/class_color_generator":"classes/abilities/class_color_generator.js","./abilities/class_wall_detector":"classes/abilities/class_wall_detector.js","./abilities/class_colorChanger":"classes/abilities/class_colorChanger.js","./abilities/class_collosionTreeDetection":"classes/abilities/class_collosionTreeDetection.js","./abilities/class_grow":"classes/abilities/class_grow.js"}],"UI/ui-generator.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30262,7 +30301,7 @@ $(document).ready(function () {
       console.log("setup function");
       var cnv = sk.createCanvas(canvas_width, canvas_height);
       cnv.parent("Canvas-container");
-      sk.background(134); // Set line drawing color to white
+      sk.background("#F9F9F9"); // Set line drawing color to white
 
       sk.frameRate(30);
     };
@@ -30277,7 +30316,7 @@ $(document).ready(function () {
                 break;
               }
 
-              sk.background(134);
+              sk.background("#F9F9F9");
               _context.next = 4;
               return _uiGenerator.swarm.setBotStates(sk);
 
