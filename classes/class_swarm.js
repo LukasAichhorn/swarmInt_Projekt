@@ -5,6 +5,7 @@ import { color_generator } from "./abilities/class_color_generator";
 import { WallDetector } from "./abilities/class_wall_detector";
 import { ColorChanger } from "./abilities/class_colorChanger";
 import { CollisionTreeDetection } from "./abilities/class_collosionTreeDetection";
+import { Grow } from "./abilities/class_grow";
 
 
 export class Swarm {    
@@ -12,7 +13,7 @@ export class Swarm {
     constructor(numBots, endConditions) {
         this.numBots = numBots;
         let color = new color_generator; 
-        this.abilities = [new move(),new WallDetector(),new ColorChanger(),new CollisionTreeDetection()];
+        this.abilities = [new move(),new WallDetector(),new ColorChanger(),new CollisionTreeDetection(),new Grow()];
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      

@@ -8,9 +8,9 @@ export class CollisionTreeDetection{
     };
 
 
-narrowDetection(posx1, posy1, posx2, posy2) {
-    let circle1 = {radius: 8, x: posx1, y: posy1};
-    let circle2 = {radius: 8, x: posx2, y: posy2};
+narrowDetection(bot, otherBot,posx1, posy1, posx2, posy2) {
+    let circle1 = {radius: bot.size/2, x: posx1, y: posy1};
+    let circle2 = {radius: otherBot.size/2, x: posx2, y: posy2};
 
     let dx = circle1.x - circle2.x;
     let dy = circle1.y - circle2.y;
@@ -45,8 +45,8 @@ narrowDetection(posx1, posy1, posx2, posy2) {
             if(notVisited.length>=1){
                 notVisited.forEach(otherBot =>{
                     
-                    if(this.narrowDetection(bot.position[0],bot.position[1],otherBot.position[0],otherBot.position[1])){
-                        console.log(`${bot.name} id:${bot.id} collided with ${otherBot.name} id:${otherBot.id}`);
+                    if(this.narrowDetection(bot, otherBot, bot.position[0],bot.position[1],otherBot.position[0],otherBot.position[1])){
+                        //console.log(`${bot.name} id:${bot.id} collided with ${otherBot.name} id:${otherBot.id}`);
 
                         bot.states.colliding = true;
                         bot.states.collider = otherBot;
