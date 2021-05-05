@@ -44,14 +44,32 @@ let s = (sk) => {
     sk.draw =  async () =>{
         if(swarm!= null){
             sk.background(134);
-            await swarm.setBotStates(sk);
-           await swarm.excecuteAbilities(sk);
-          swarm.draw(sk);
+
+        
+          await swarm.setBotStates(sk);
+          await swarm.excecuteAbilities(sk);
+         swarm.draw(sk);
+          
+          
             
             //sk.line(2, 2, 2, 400);
             //sk.line(2, 2, 720, 2);
          }  
     }
+    
+      sk.keyPressed = ( )=>{
+      if(sk.keyCode === sk.LEFT_ARROW ){
+          console.log("pause");
+          sk.noLoop();
+          console.log(swarm.bots);
+        }
+        if(sk.keyCode === sk.RIGHT_ARROW ){
+          console.log("play");
+          sk.loop();
+      }
+
+    }
+
 }
 const P5 = new p5(s);
 

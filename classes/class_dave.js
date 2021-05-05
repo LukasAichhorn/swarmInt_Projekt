@@ -8,7 +8,11 @@ export class Dave {
         this.colors = colorInHex;
         this.randColor = Math.floor((Math.random() * 5) + 0);
         this.id = id;
-        this.states ={wall:false};
+        this.states ={
+            wall:false,
+            colliding: false,
+            collider: null
+        };
         //this.abilities = abilities;
 
         this.direction = direction;
@@ -40,7 +44,7 @@ export class Dave {
     }
 
     draw(sk){ 
-         console.log(this.colors);
+         
          //set draw color to bots current color;
         sk.fill(this.colors);     
         sk.circle(this.position[0], this.position[1], 10);
@@ -50,6 +54,7 @@ export class Dave {
         sk.text(s,this.position[0],this.position[1]+10);
         
         
+
         
     }
     getID(){

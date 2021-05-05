@@ -140,7 +140,7 @@ var move = /*#__PURE__*/function () {
 
   _createClass(move, [{
     key: "moveInDirection",
-    value: function moveInDirection(bot, sk) {
+    value: function moveInDirection(bot, sk, speed) {
       //console.log(sk.HALF_PI);
       if (bot.position[0] <= 1 || bot.position[0] >= 719) {
         bot.direction.rotate(sk.HALF_PI);
@@ -148,8 +148,8 @@ var move = /*#__PURE__*/function () {
         bot.direction.rotate(sk.HALF_PI);
       }
 
-      var posx = bot.position[0] + bot.direction.x;
-      var posy = bot.position[1] + bot.direction.y;
+      var posx = bot.position[0] + bot.direction.x * speed;
+      var posy = bot.position[1] + bot.direction.y * speed;
       return [posx, posy];
     }
   }, {
@@ -161,10 +161,18 @@ var move = /*#__PURE__*/function () {
     key: "execute",
     value: function execute(bot, sk) {
       if (bot.states.wall) {
-        bot.direction.rotate(sk.HALF_PI);
+        var n = sk.createVector(bot.direction.x, bot.direction.y);
+        n.rotate(sk.HALF_PI);
+        bot.direction.reflect(n);
       }
 
-      var newPos = this.moveInDirection(bot, sk);
+      if (bot.states.colliding) {
+        //let n =  sk.createVector(bot.direction.x,bot.direction.y);
+        //n.rotate(sk.HALF_PI);
+        bot.direction.rotate(sk.HALF_PI); //console.log(`${bot.name} change direction because of collision`)
+      }
+
+      var newPos = this.moveInDirection(bot, sk, 2);
       bot.position = newPos;
     }
   }, {
@@ -28896,7 +28904,9 @@ var Dave = /*#__PURE__*/function () {
     this.randColor = Math.floor(Math.random() * 5 + 0);
     this.id = id;
     this.states = {
-      wall: false
+      wall: false,
+      colliding: false,
+      collider: null
     }; //this.abilities = abilities;
 
     this.direction = direction;
@@ -28921,8 +28931,7 @@ var Dave = /*#__PURE__*/function () {
   _createClass(Dave, [{
     key: "draw",
     value: function draw(sk) {
-      console.log(this.colors); //set draw color to bots current color;
-
+      //set draw color to bots current color;
       sk.fill(this.colors);
       sk.circle(this.position[0], this.position[1], 10);
       var s = this.name;
@@ -29076,14 +29085,14 @@ var WallDetector = /*#__PURE__*/function () {
 
   _createClass(WallDetector, [{
     key: "checkStates",
-    value: function checkStates(bot) {
+    value: function checkStates(bots, bot) {
       if (bot.position[0] <= 1 || bot.position[0] >= 719) {
-        bot.states.wall = true;
-        console.log("wall collosion for ".concat(bot.name));
+        bot.states.wall = true; //console.log(`wall collosion for ${bot.name}`);
+
         return;
       } else if (bot.position[1] <= 1 || bot.position[1] >= 399) {
-        bot.states.wall = true;
-        console.log("wall collosion for ".concat(bot.name));
+        bot.states.wall = true; // console.log(`wall collosion for ${bot.name}`)
+
         return;
       }
 
@@ -29126,13 +29135,16 @@ var ColorChanger = /*#__PURE__*/function () {
     }
   }, {
     key: "checkStates",
-    value: function checkStates(bot) {}
+    value: function checkStates(bots, bot) {}
   }, {
     key: "execute",
     value: function execute(bot) {
-      if (bot.states.wall) {
-        console.log("trigger colorchange for ".concat(bot.name));
-        this.changeColorToWhite(bot);
+      if (bot.states.wall) {//console.log(`trigger colorchange for ${bot.name}`);
+        //this.changeColorToWhite(bot);
+      }
+
+      if (bot.states.colliding) {
+        bot.colors = bot.states.collider.colors;
       }
     }
   }]);
@@ -29141,223 +29153,7 @@ var ColorChanger = /*#__PURE__*/function () {
 }();
 
 exports.ColorChanger = ColorChanger;
-},{}],"classes/class_swarm.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Swarm = void 0;
-
-var _class_move = require("./abilities/class_move");
-
-var _class_dave = require("./class_dave");
-
-var _class_color_generator = require("./abilities/class_color_generator");
-
-var _class_wall_detector = require("./abilities/class_wall_detector");
-
-var _class_colorChanger = require("./abilities/class_colorChanger");
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Swarm = /*#__PURE__*/function () {
-  function Swarm(numBots, endConditions) {
-    _classCallCheck(this, Swarm);
-
-    this.numBots = numBots;
-    var color = new _class_color_generator.color_generator();
-    this.abilities = [new _class_move.move(), new _class_wall_detector.WallDetector(), new _class_colorChanger.ColorChanger()]; //array type bots
-
-    this.bots = [];
-
-    for (var i = 0; i < numBots; i++) {
-      // WILD color ist aktiviert
-      var newDave = new _class_dave.Dave(this.randPos(1, 720), this.randPos(1, 400), color.getWildColor(), i, this.abilities[0].getRandomDirection());
-      this.bots.push(newDave);
-    }
-
-    this.taskCompleted = false; //irgendein array aber noch nicht sicher was da drin sein soll
-    //evtl eine neue klasse?
-    //muss irgendwie überprüfbar sein
-
-    this.endConditions = endConditions;
-    console.log("Swarm Construction Completed");
-  }
-
-  _createClass(Swarm, [{
-    key: "randPos",
-    value: function randPos(from, to) {
-      var val = Math.floor(Math.random() * to + from);
-      return val;
-    }
-  }, {
-    key: "draw",
-    value: function draw(sk) {
-      this.bots.forEach(function (bot) {
-        bot.draw(sk);
-      });
-    }
-  }, {
-    key: "addBot",
-    value: function addBot(bot) {
-      this.bots.push(bot);
-      this.numBots += 1;
-    } //early idea on how a swarm can know if all tasks are completed
-    //obv not finished!
-
-  }, {
-    key: "checkTaskCompletion",
-    value: function checkTaskCompletion() {
-      this.endConditions.forEach(function (element) {
-        if (element == "completed Task") {} else {
-          return false;
-        }
-      });
-      return true;
-    }
-  }, {
-    key: "updateStatus",
-    value: function updateStatus() {
-      if (this.checkTaskCompletion) {
-        this.taskCompleted = true;
-      } else {
-        this.taskCompleted = false;
-      }
-    }
-  }, {
-    key: "setBotStates",
-    value: function setBotStates(sk) {
-      for (var ability = 0; ability < this.abilities.length; ability++) {
-        for (var bot = 0; bot < this.bots.length; bot++) {
-          this.abilities[ability].checkStates(this.bots[bot]);
-        }
-      }
-
-      return true;
-    }
-  }, {
-    key: "excecuteAbilities",
-    value: function excecuteAbilities(sk) {
-      for (var ability = 0; ability < this.abilities.length; ability++) {
-        for (var bot = 0; bot < this.bots.length; bot++) {
-          this.abilities[ability].execute(this.bots[bot], sk);
-        }
-      }
-
-      return true;
-    }
-  }]);
-
-  return Swarm;
-}();
-
-exports.Swarm = Swarm;
-},{"./abilities/class_move":"classes/abilities/class_move.js","./class_dave":"classes/class_dave.js","./abilities/class_color_generator":"classes/abilities/class_color_generator.js","./abilities/class_wall_detector":"classes/abilities/class_wall_detector.js","./abilities/class_colorChanger":"classes/abilities/class_colorChanger.js"}],"UI/ui-generator.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.renderMenue = renderMenue;
-exports.addInputElem = addInputElem;
-exports.addSelectElem = addSelectElem;
-exports.addToogleBtn = addToogleBtn;
-exports.renderSubmitSection = renderSubmitSection;
-exports.renderAbilitySection = renderAbilitySection;
-exports.createSetupArray = createSetupArray;
-exports.FORM = exports.swarm = exports.UI = exports.setupData = void 0;
-
-var _class_swarm = require("../classes/class_swarm");
-
-// A $( document ).ready() block.
-var setupData = ["alog1", "algo2", "ALGO3"];
-exports.setupData = setupData;
-var UI = $("#UI-container");
-exports.UI = UI;
-var swarm;
-exports.swarm = swarm;
-var form = $("<form></form>").attr("id", "UI-Form").attr("class", "bg-light border rounded");
-var FORM = form;
-exports.FORM = FORM;
-var SimSetup = [];
-
-function renderMenue(FORM, ToogleID, data) {
-  console.log(data);
-
-  if (ToogleID == "toogle-sb") {
-    FORM.empty();
-    addInputElem(FORM, "daveCount", "Dave Count:", "text", "insert amount of robots");
-    addInputElem(FORM, "SE1", "Something else", "text", "insert something else");
-    renderAbilitySection();
-  } else {
-    FORM.empty();
-    addSelectElem(FORM, data, "Startbedingungen");
-  }
-}
-
-function addInputElem(target, fieldName, labelText, type, placeholder) {
-  var s = '<div class="m-3">\
-    <label for="' + fieldName + '" class="form-label">' + labelText + '</label>\
-    <input type="' + type + '" class="form-control" id="' + fieldName + '" placeholder="' + placeholder + '"name="' + fieldName + '">\
-    </div>';
-  target.append(s);
-}
-
-function addSelectElem(target, optValues, id) {
-  var c = $("<div />").attr("class", "m-3");
-  var root = $("<select></select>").attr("class", "form-select").attr("id", id);
-  optValues.forEach(function (optText) {
-    var option = $("<option></option").attr("value", optText).text(optText);
-    root.append(option);
-  });
-  target.append(c.append(root));
-}
-
-function addToogleBtn(target, name, type, id, labelText, checked) {
-  var b1 = $("<input />").attr("type", "radio").attr("class", "btn-check ").attr("name", name).attr("id", id).attr("autocomplete", "off");
-
-  if (checked == true) {
-    b1.attr("checked", "checked");
-  }
-
-  b1.on("click", function () {
-    var ToogleID = $(this).attr("id");
-    console.log("toogle button with id: " + ToogleID + " was pressed");
-    renderMenue(FORM, ToogleID, setupData);
-  });
-  var label = $("<label />").attr("class", " m-1 btn btn-outline-" + type).attr("for", id).text(labelText);
-  target.append(b1);
-  target.append(label);
-}
-
-function initSim(simSetup) {
-  var botCount = simSetup[0]["value"];
-  console.log("botcount: " + botCount);
-  exports.swarm = swarm = new _class_swarm.Swarm(parseInt(botCount), "none");
-  console.log(swarm);
-}
-
-function renderSubmitSection(target, text, btnType) {
-  var c = $("<div />").attr("class", " mt-1 p-1 bg-light border rounded");
-  var b = $("<button />").attr("type", "button").attr("class", "btn btn-" + btnType).text(text);
-  b.on("click", function () {
-    var simSetup = $("#UI-Form").serializeArray();
-    console.log(simSetup);
-    initSim(simSetup);
-  });
-  c.append(b);
-  target.append(c);
-}
-
-function renderAbilitySection() {}
-
-function createSetupArray() {}
-},{"../classes/class_swarm":"classes/class_swarm.js"}],"node_modules/regenerator-runtime/runtime.js":[function(require,module,exports) {
+},{}],"node_modules/regenerator-runtime/runtime.js":[function(require,module,exports) {
 var define;
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -30108,7 +29904,331 @@ try {
   Function("r", "regeneratorRuntime = r")(runtime);
 }
 
-},{}],"main.js":[function(require,module,exports) {
+},{}],"classes/abilities/class_collosionTreeDetection.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CollisionTreeDetection = void 0;
+
+require("regenerator-runtime/runtime");
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var CollisionTreeDetection = /*#__PURE__*/function () {
+  function CollisionTreeDetection() {
+    _classCallCheck(this, CollisionTreeDetection);
+  }
+
+  _createClass(CollisionTreeDetection, [{
+    key: "narrowDetection",
+    value: function narrowDetection(posx1, posy1, posx2, posy2) {
+      var circle1 = {
+        radius: 8,
+        x: posx1,
+        y: posy1
+      };
+      var circle2 = {
+        radius: 8,
+        x: posx2,
+        y: posy2
+      };
+      var dx = circle1.x - circle2.x;
+      var dy = circle1.y - circle2.y;
+      var distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < circle1.radius + circle2.radius) {
+        return true;
+      }
+    }
+  }, {
+    key: "treeSearch",
+    value: function treeSearch(bots) {
+      var _this = this;
+
+      var allbots = _toConsumableArray(bots);
+
+      allbots.forEach(function (bot) {
+        bot.states.colliding = false;
+        bot.states.collider = null;
+      }); //copy to new memory space
+
+      var notVisited = _toConsumableArray(allbots);
+
+      notVisited.forEach(function (bot) {
+        bot.states.colliding = false;
+        bot.states.collider = null;
+      });
+      notVisited.shift();
+      allbots.forEach(function (bot) {
+        //reset state
+        if (notVisited.length >= 1) {
+          notVisited.forEach(function (otherBot) {
+            if (_this.narrowDetection(bot.position[0], bot.position[1], otherBot.position[0], otherBot.position[1])) {
+              console.log("".concat(bot.name, " id:").concat(bot.id, " collided with ").concat(otherBot.name, " id:").concat(otherBot.id));
+              bot.states.colliding = true;
+              bot.states.collider = otherBot;
+              otherBot.states.colliding = true;
+              otherBot.states.collider = bot;
+              allbots.shift();
+              notVisited.shift();
+            } else {}
+          });
+          notVisited.shift();
+        }
+      });
+    }
+  }, {
+    key: "checkStates",
+    value: function checkStates(bots, bot) {
+      this.treeSearch(bots);
+    }
+  }, {
+    key: "execute",
+    value: function execute() {}
+  }]);
+
+  return CollisionTreeDetection;
+}(); //class end
+
+
+exports.CollisionTreeDetection = CollisionTreeDetection;
+},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js"}],"classes/class_swarm.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Swarm = void 0;
+
+var _class_move = require("./abilities/class_move");
+
+var _class_dave = require("./class_dave");
+
+var _class_color_generator = require("./abilities/class_color_generator");
+
+var _class_wall_detector = require("./abilities/class_wall_detector");
+
+var _class_colorChanger = require("./abilities/class_colorChanger");
+
+var _class_collosionTreeDetection = require("./abilities/class_collosionTreeDetection");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Swarm = /*#__PURE__*/function () {
+  function Swarm(numBots, endConditions) {
+    _classCallCheck(this, Swarm);
+
+    this.numBots = numBots;
+    var color = new _class_color_generator.color_generator();
+    this.abilities = [new _class_move.move(), new _class_wall_detector.WallDetector(), new _class_colorChanger.ColorChanger(), new _class_collosionTreeDetection.CollisionTreeDetection()]; //array type bots
+
+    this.bots = [];
+
+    for (var i = 0; i < numBots; i++) {
+      // WILD color ist aktiviert
+      var newDave = new _class_dave.Dave(this.randPos(1, 720), this.randPos(1, 400), color.getWildColor(), i, this.abilities[0].getRandomDirection());
+      this.bots.push(newDave);
+    }
+
+    this.taskCompleted = false; //irgendein array aber noch nicht sicher was da drin sein soll
+    //evtl eine neue klasse?
+    //muss irgendwie überprüfbar sein
+
+    this.endConditions = endConditions;
+    console.log("Swarm Construction Completed");
+  }
+
+  _createClass(Swarm, [{
+    key: "randPos",
+    value: function randPos(from, to) {
+      var val = Math.floor(Math.random() * to + from);
+      return val;
+    }
+  }, {
+    key: "draw",
+    value: function draw(sk) {
+      this.bots.forEach(function (bot) {
+        bot.draw(sk);
+      });
+    }
+  }, {
+    key: "addBot",
+    value: function addBot(bot) {
+      this.bots.push(bot);
+      this.numBots += 1;
+    } //early idea on how a swarm can know if all tasks are completed
+    //obv not finished!
+
+  }, {
+    key: "checkTaskCompletion",
+    value: function checkTaskCompletion() {
+      this.endConditions.forEach(function (element) {
+        if (element == "completed Task") {} else {
+          return false;
+        }
+      });
+      return true;
+    }
+  }, {
+    key: "updateStatus",
+    value: function updateStatus() {
+      if (this.checkTaskCompletion) {
+        this.taskCompleted = true;
+      } else {
+        this.taskCompleted = false;
+      }
+    }
+  }, {
+    key: "setBotStates",
+    value: function setBotStates(sk) {
+      for (var ability = 0; ability < this.abilities.length; ability++) {
+        for (var bot = 0; bot < this.bots.length; bot++) {
+          this.abilities[ability].checkStates(this.bots, this.bots[bot]);
+        }
+      }
+
+      return true;
+    }
+  }, {
+    key: "excecuteAbilities",
+    value: function excecuteAbilities(sk) {
+      for (var ability = 0; ability < this.abilities.length; ability++) {
+        for (var bot = 0; bot < this.bots.length; bot++) {
+          this.abilities[ability].execute(this.bots[bot], sk);
+        }
+      }
+
+      return true;
+    }
+  }]);
+
+  return Swarm;
+}();
+
+exports.Swarm = Swarm;
+},{"./abilities/class_move":"classes/abilities/class_move.js","./class_dave":"classes/class_dave.js","./abilities/class_color_generator":"classes/abilities/class_color_generator.js","./abilities/class_wall_detector":"classes/abilities/class_wall_detector.js","./abilities/class_colorChanger":"classes/abilities/class_colorChanger.js","./abilities/class_collosionTreeDetection":"classes/abilities/class_collosionTreeDetection.js"}],"UI/ui-generator.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.renderMenue = renderMenue;
+exports.addInputElem = addInputElem;
+exports.addSelectElem = addSelectElem;
+exports.addToogleBtn = addToogleBtn;
+exports.renderSubmitSection = renderSubmitSection;
+exports.renderAbilitySection = renderAbilitySection;
+exports.createSetupArray = createSetupArray;
+exports.FORM = exports.swarm = exports.UI = exports.setupData = void 0;
+
+var _class_swarm = require("../classes/class_swarm");
+
+// A $( document ).ready() block.
+var setupData = ["alog1", "algo2", "ALGO3"];
+exports.setupData = setupData;
+var UI = $("#UI-container");
+exports.UI = UI;
+var swarm;
+exports.swarm = swarm;
+var form = $("<form></form>").attr("id", "UI-Form").attr("class", "bg-light border rounded");
+var FORM = form;
+exports.FORM = FORM;
+var SimSetup = [];
+
+function renderMenue(FORM, ToogleID, data) {
+  console.log(data);
+
+  if (ToogleID == "toogle-sb") {
+    FORM.empty();
+    addInputElem(FORM, "daveCount", "Dave Count:", "text", "insert amount of robots");
+    addInputElem(FORM, "SE1", "Something else", "text", "insert something else");
+    renderAbilitySection();
+  } else {
+    FORM.empty();
+    addSelectElem(FORM, data, "Startbedingungen");
+  }
+}
+
+function addInputElem(target, fieldName, labelText, type, placeholder) {
+  var s = '<div class="m-3">\
+    <label for="' + fieldName + '" class="form-label">' + labelText + '</label>\
+    <input type="' + type + '" class="form-control" id="' + fieldName + '" placeholder="' + placeholder + '"name="' + fieldName + '">\
+    </div>';
+  target.append(s);
+}
+
+function addSelectElem(target, optValues, id) {
+  var c = $("<div />").attr("class", "m-3");
+  var root = $("<select></select>").attr("class", "form-select").attr("id", id);
+  optValues.forEach(function (optText) {
+    var option = $("<option></option").attr("value", optText).text(optText);
+    root.append(option);
+  });
+  target.append(c.append(root));
+}
+
+function addToogleBtn(target, name, type, id, labelText, checked) {
+  var b1 = $("<input />").attr("type", "radio").attr("class", "btn-check ").attr("name", name).attr("id", id).attr("autocomplete", "off");
+
+  if (checked == true) {
+    b1.attr("checked", "checked");
+  }
+
+  b1.on("click", function () {
+    var ToogleID = $(this).attr("id");
+    console.log("toogle button with id: " + ToogleID + " was pressed");
+    renderMenue(FORM, ToogleID, setupData);
+  });
+  var label = $("<label />").attr("class", " m-1 btn btn-outline-" + type).attr("for", id).text(labelText);
+  target.append(b1);
+  target.append(label);
+}
+
+function initSim(simSetup) {
+  var botCount = simSetup[0]["value"];
+  console.log("botcount: " + botCount);
+  exports.swarm = swarm = new _class_swarm.Swarm(parseInt(botCount), "none");
+  console.log(swarm);
+}
+
+function renderSubmitSection(target, text, btnType) {
+  var c = $("<div />").attr("class", " mt-1 p-1 bg-light border rounded");
+  var b = $("<button />").attr("type", "button").attr("class", "btn btn-" + btnType).text(text);
+  b.on("click", function () {
+    var simSetup = $("#UI-Form").serializeArray();
+    console.log(simSetup);
+    initSim(simSetup);
+  });
+  c.append(b);
+  target.append(c);
+}
+
+function renderAbilitySection() {}
+
+function createSetupArray() {}
+},{"../classes/class_swarm":"classes/class_swarm.js"}],"main.js":[function(require,module,exports) {
 "use strict";
 
 var _class_swarm = require("./classes/class_swarm");
@@ -30177,6 +30297,19 @@ $(document).ready(function () {
         }
       }, _callee);
     }));
+
+    sk.keyPressed = function () {
+      if (sk.keyCode === sk.LEFT_ARROW) {
+        console.log("pause");
+        sk.noLoop();
+        console.log(_uiGenerator.swarm.bots);
+      }
+
+      if (sk.keyCode === sk.RIGHT_ARROW) {
+        console.log("play");
+        sk.loop();
+      }
+    };
   };
 
   var P5 = new p5(s);

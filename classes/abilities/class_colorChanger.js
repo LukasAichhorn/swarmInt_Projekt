@@ -9,7 +9,7 @@ export class ColorChanger{
         
     }
 
-    checkStates(bot){
+    checkStates(bots,bot){
         
     }
 
@@ -17,8 +17,11 @@ export class ColorChanger{
         
         if(bot.states.wall){
 
-            console.log(`trigger colorchange for ${bot.name}`);
-            this.changeColorToWhite(bot);
+            //console.log(`trigger colorchange for ${bot.name}`);
+            //this.changeColorToWhite(bot);
+        }
+        if(bot.states.colliding){
+            bot.colors = bot.states.collider.colors;
         }
 
     }
