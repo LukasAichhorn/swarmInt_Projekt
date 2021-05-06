@@ -30,4 +30,6 @@ export class CollisionDetector{
         // collision detected!
         }
     }
+
+    
 }
