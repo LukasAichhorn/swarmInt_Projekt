@@ -1,21 +1,11 @@
 import { Swarm } from "./classes/class_swarm";
 import { addToogleBtn, renderMenue, renderSubmitSection,setupData,UI,FORM,swarm } from "./UI/ui-generator";
 import  'p5';
-import 'regenerator-runtime/runtime'
-
-
-
-
-
 
 
 $(document).ready(function () {
 const canvas_width = 720;
 const canvas_height = 400;
-
-
-
-
 
     let ToogleID = "toogle-sb";
 
