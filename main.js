@@ -3,18 +3,9 @@ import { addToogleBtn, renderMenue, renderSubmitSection,setupData,UI,FORM,swarm 
 import  'p5';
 
 
-
-
-
-
-
 $(document).ready(function () {
 const canvas_width = 720;
 const canvas_height = 400;
-
-
-
-
 
     let ToogleID = "toogle-sb";
 
@@ -31,40 +22,44 @@ const canvas_height = 400;
   renderSubmitSection(UI,"Start Simulation","success");
 
 
-//   window.setup = ()=>{
-//     console.log("setup function");
-//     let cnv =createCanvas(canvas_width, canvas_height);
-//     cnv.parent("Canvas-container");
-//   background(134); // Set line drawing color to white
-//   frameRate(30);
-
-//   };
-
-//  window.draw = ()=>{
-//      if(swarm!= null){
-//         background(134);
-//         swarm.draw();
-//      }  
-// }
-
 let s = (sk) => {    
     sk.setup = () =>{
         console.log("setup function");
         let cnv =sk.createCanvas(canvas_width, canvas_height);
         cnv.parent("Canvas-container");
-      sk.background(134); // Set line drawing color to white
+      sk.background("#F9F9F9"); // Set line drawing color to white
       sk.frameRate(30);
     }
 
-    sk.draw = () =>{
+    sk.draw =  async () =>{
         if(swarm!= null){
-            sk.background(134);
-            swarm.doAbilities(sk);
-            swarm.draw(sk);
-            sk.line(2, 2, 2, 400);
-            sk.line(2, 2, 720, 2);
+          sk.background("#F9F9F9");
+
+        
+          await swarm.setBotStates(sk);
+          await swarm.excecuteAbilities(sk);
+         swarm.draw(sk);
+          
+          
+            
+            //sk.line(2, 2, 2, 400);
+            //sk.line(2, 2, 720, 2);
          }  
     }
+    
+      sk.keyPressed = ( )=>{
+      if(sk.keyCode === sk.LEFT_ARROW ){
+          console.log("pause");
+          sk.noLoop();
+          console.log(swarm.bots);
+        }
+        if(sk.keyCode === sk.RIGHT_ARROW ){
+          console.log("play");
+          sk.loop();
+      }
+
+    }
+
 }
 const P5 = new p5(s);
 
