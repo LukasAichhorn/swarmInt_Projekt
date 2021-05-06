@@ -30081,7 +30081,7 @@ var Swarm = /*#__PURE__*/function () {
 
     this.numBots = numBots;
     var color = new _class_color_generator.color_generator();
-    this.abilities = [new _class_move.move(), new _class_wall_detector.WallDetector(), new _class_colorChanger.ColorChanger(), new _class_collosionTreeDetection.CollisionTreeDetection(), new _class_grow.Grow()]; //array type bots
+    this.abilities = [new _class_move.move(), new _class_wall_detector.WallDetector(), new _class_colorChanger.ColorChanger(), new _class_collosionTreeDetection.CollisionTreeDetection()]; //array type bots
 
     this.bots = [];
 
@@ -30381,7 +30381,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50796" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54719" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

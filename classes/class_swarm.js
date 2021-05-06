@@ -13,7 +13,8 @@ export class Swarm {
     constructor(numBots, endConditions) {
         this.numBots = numBots;
         let color = new color_generator; 
-        this.abilities = [new move(),new WallDetector(),new ColorChanger(),new CollisionTreeDetection(),new Grow()];
+        this.abilities = [new move(),new WallDetector(),new ColorChanger(),new CollisionTreeDetection()];
+        
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      
