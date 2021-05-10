@@ -6,6 +6,7 @@ import { WallDetector } from "./abilities/class_wall_detector";
 import { ColorChanger } from "./abilities/class_colorChanger";
 import { CollisionTreeDetection } from "./abilities/class_collosionTreeDetection";
 import { Grow } from "./abilities/class_grow";
+import {canvas_width, canvas_height} from "../settings/constants.js";
 
 
 export class Swarm {    
@@ -20,7 +21,7 @@ export class Swarm {
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      
             // WILD color ist aktiviert
-            let newDave = new Dave(this.randPos(1+diameter,720-diameter),this.randPos(1+diameter,400-diameter),color.getWildColor(),i ,this.abilities[0].getRandomDirection(), diameter);
+            let newDave = new Dave(this.randPos(diameter,canvas_width-diameter),this.randPos(diameter,canvas_height-diameter),color.getWildColor(),i ,this.abilities[0].getRandomDirection(), diameter);
             this.bots.push(newDave);
             
         }
