@@ -2,13 +2,13 @@ import  'p5';
 
 export class Dave {
 
-    constructor(posx, posy, colorInHex, id, direction) {
+    constructor(posx, posy, colorInHex, id, direction, diameter) {
 
         this.position = [posx, posy];
         this.colors = colorInHex;
         this.randColor = Math.floor((Math.random() * 5) + 0);
         this.id = id;
-        this.size = 10;
+        this.size = diameter;
         this.states ={
             wall:false,
             colliding: false,

@@ -1,7 +1,7 @@
-dist
+dist/
 node_modules
 .cache
-dist
+dist/
 dist/main.1f19ae8e.js
 dist/main.1f19ae8e.js
 dist/main.1f19ae8e.js.map
