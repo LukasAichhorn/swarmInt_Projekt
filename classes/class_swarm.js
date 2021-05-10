@@ -6,6 +6,7 @@ import { WallDetector } from "./abilities/class_wall_detector";
 import { ColorChanger } from "./abilities/class_colorChanger";
 import { CollisionTreeDetection } from "./abilities/class_collosionTreeDetection";
 import { Grow } from "./abilities/class_grow";
+import {canvas_width, canvas_height} from "../settings/constants.js";
 
 
 export class Swarm {    
@@ -14,15 +15,31 @@ export class Swarm {
         this.numBots = numBots;
         let color = new color_generator; 
         this.abilities = [new move(),new WallDetector(),new ColorChanger(),new CollisionTreeDetection()];
-        
+        let diameter = 10;
+
         //array type bots
         this.bots = [];
+        this.pickedColors = [];
         for (let i = 0; i < numBots; i++) {                      
             // WILD color ist aktiviert
-            let newDave = new Dave(this.randPos(1,720),this.randPos(1,400),color.getWildColor(),i ,this.abilities[0].getRandomDirection());
+            var currentColor = {name: color.getWildColor(), number: 1};
+            let newDave = new Dave(this.randPos(diameter,canvas_width-diameter),this.randPos(diameter,canvas_height-diameter),currentColor.name,i ,this.abilities[0].getRandomDirection(), diameter);
             this.bots.push(newDave);
-            
+            var ind = this.pickedColors.indexOf(currentColor.name);
+            if (ind === -1){
+                this.pickedColors.push(currentColor);
+                console.log("not found");
+                ind = this.pickedColors.length-1;
+            }
+            else {
+                this.pickedColors[ind].name++;
+            }
+            console.log("index:" + ind);
+            console.log("expected: " + currentColor.name);
+            console.log("color: " + this.pickedColors[ind].name);
         }
+        console.log(this.pickedColors);
+         
         this.taskCompleted = false;
         //irgendein array aber noch nicht sicher was da drin sein soll
         //evtl eine neue klasse?

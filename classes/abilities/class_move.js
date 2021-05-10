@@ -1,4 +1,4 @@
-
+import {canvas_width, canvas_height} from "../../settings/constants.js";
 export class move {
     
     constructor(){              
@@ -7,17 +7,17 @@ export class move {
 
     moveInDirection(bot, sk,speed){
         //console.log(sk.HALF_PI);
-        if(bot.position[0] <= 1 || bot.position[0] >= 719){
+        if(bot.position.x <= 1 || bot.position.x >= canvas_width-1){
             bot.direction.rotate(sk.HALF_PI);
             
         }
-        else if(bot.position[1] <= 1 || bot.position[1] >= 399){
+        else if(bot.position.y <= 1 || bot.position.y >= canvas_height-1){
             bot.direction.rotate(sk.HALF_PI);
             
         }
-        let posx = bot.position[0] + bot.direction.x*speed;
-        let posy = bot.position[1] + bot.direction.y*speed;
-        return [posx,posy];
+        let posx = bot.position.x + bot.direction.x*speed;
+        let posy = bot.position.y + bot.direction.y*speed;
+        return {x:posx, y:posy};
     }
 
     getRandomDirection(){        
@@ -38,8 +38,8 @@ export class move {
             //n.rotate(sk.HALF_PI);
             bot.direction.rotate(sk.HALF_PI);          //console.log(`${bot.name} change direction because of collision`)
         }
-       var newPos = this.moveInDirection(bot, sk, 2);
-       bot.position = newPos;
+
+        bot.position = this.moveInDirection(bot, sk, 2);
     }
     checkStates(){
 

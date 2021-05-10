@@ -45,7 +45,7 @@ narrowDetection(bot, otherBot,posx1, posy1, posx2, posy2) {
             if(notVisited.length>=1){
                 notVisited.forEach(otherBot =>{
                     
-                    if(this.narrowDetection(bot, otherBot, bot.position[0],bot.position[1],otherBot.position[0],otherBot.position[1])){
+                    if(this.narrowDetection(bot, otherBot, bot.position.x,bot.position.y,otherBot.position.x,otherBot.position.y)){
                         //console.log(`${bot.name} id:${bot.id} collided with ${otherBot.name} id:${otherBot.id}`);
 
                         bot.states.colliding = true;
