@@ -4,7 +4,7 @@ export class Dave {
 
     constructor(posx, posy, colorInHex, id, direction, diameter) {
 
-        this.position = [posx, posy];
+        this.position = {x:posx, y:posy};
         this.colors = colorInHex;
         this.randColor = Math.floor((Math.random() * 5) + 0);
         this.id = id;
@@ -48,11 +48,11 @@ export class Dave {
          
          //set draw color to bots current color;
         sk.fill(this.colors);     
-        sk.circle(this.position[0], this.position[1], this.size);
+        sk.circle(this.position.x, this.position.y, this.size);
         
         let s = this.name;
         sk.textSize(10);
-        sk.text(s,this.position[0]- this.size ,this.position[1]- this.size);
+        sk.text(s,this.position.x - this.size ,this.position.y - this.size);
         
         
 

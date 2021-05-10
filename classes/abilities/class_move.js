@@ -7,17 +7,17 @@ export class move {
 
     moveInDirection(bot, sk,speed){
         //console.log(sk.HALF_PI);
-        if(bot.position[0] <= 1 || bot.position[0] >= 719){
+        if(bot.position.x <= 1 || bot.position.x >= 719){
             bot.direction.rotate(sk.HALF_PI);
             
         }
-        else if(bot.position[1] <= 1 || bot.position[1] >= 399){
+        else if(bot.position.y <= 1 || bot.position.y >= 399){
             bot.direction.rotate(sk.HALF_PI);
             
         }
-        let posx = bot.position[0] + bot.direction.x*speed;
-        let posy = bot.position[1] + bot.direction.y*speed;
-        return [posx,posy];
+        let posx = bot.position.x + bot.direction.x*speed;
+        let posy = bot.position.y + bot.direction.y*speed;
+        return {x:posx,y:posy};
     }
 
     getRandomDirection(){        
