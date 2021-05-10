@@ -19,12 +19,27 @@ export class Swarm {
 
         //array type bots
         this.bots = [];
+        this.pickedColors = [];
         for (let i = 0; i < numBots; i++) {                      
             // WILD color ist aktiviert
-            let newDave = new Dave(this.randPos(diameter,canvas_width-diameter),this.randPos(diameter,canvas_height-diameter),color.getWildColor(),i ,this.abilities[0].getRandomDirection(), diameter);
+            var currentColor = {name: color.getWildColor(), number: 1};
+            let newDave = new Dave(this.randPos(diameter,canvas_width-diameter),this.randPos(diameter,canvas_height-diameter),currentColor.name,i ,this.abilities[0].getRandomDirection(), diameter);
             this.bots.push(newDave);
-            
+            var ind = this.pickedColors.indexOf(currentColor.name);
+            if (ind === -1){
+                this.pickedColors.push(currentColor);
+                console.log("not found");
+                ind = this.pickedColors.length-1;
+            }
+            else {
+                this.pickedColors[ind].name++;
+            }
+            console.log("index:" + ind);
+            console.log("expected: " + currentColor.name);
+            console.log("color: " + this.pickedColors[ind].name);
         }
+        console.log(this.pickedColors);
+         
         this.taskCompleted = false;
         //irgendein array aber noch nicht sicher was da drin sein soll
         //evtl eine neue klasse?
