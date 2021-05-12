@@ -14,9 +14,8 @@ export class Swarm {
     constructor(numBots, endConditions) {
         this.numBots = numBots;
         let color = new color_generator; 
-        this.abilities = [new move(),new WallDetector(),new ColorChanger(),new CollisionTreeDetection()];
+        this.abilities = this.getSelectedAbilities();
         let diameter = 10;
-
         //array type bots
         this.bots = [];
         this.pickedColors = [];
@@ -87,6 +86,31 @@ export class Swarm {
         }
     }
 
+    getSelectedAbilities() {
+        //selection shoude be parameter
+        //should be enums instead of magic numbers
+        let selection = [1,2,3,4];
+
+        let abilities = [];
+
+        if(selection.includes(1))
+            abilities.push(new move());
+        
+        if(selection.includes(2))
+            abilities.push(new WallDetector());
+
+        if(selection.includes(3))
+            abilities.push(new ColorChanger());
+        
+        if(selection.includes(4))
+            abilities.push(new CollisionTreeDetection());
+
+        return abilities;
+
+
+
+    }
+
 
     setBotStates(sk){
        for (let ability = 0; ability < this.abilities.length; ability++) {
@@ -116,4 +140,6 @@ export class Swarm {
         return true;
         
      }
+
+
 }
