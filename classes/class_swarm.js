@@ -14,7 +14,7 @@ export class Swarm {
     constructor(numBots, endConditions) {
         this.numBots = numBots;
         let color = new color_generator; 
-        this.abilities = [new move(),new WallDetector(),new ColorChanger(),new CollisionTreeDetection()];
+        this.abilities = [new move(), new WallDetector(), new ColorChanger(), new CollisionTreeDetection()];
         let diameter = 10;
 
         //array type bots
@@ -22,7 +22,7 @@ export class Swarm {
         for (let i = 0; i < numBots; i++) {                      
             // WILD color ist aktiviert
             var currentColor = {name: color.getWildColor(), number: 1};
-            let newDave = new Dave(this.randPos(diameter,canvas_width-diameter),this.randPos(diameter,canvas_height-diameter),currentColor.name,i ,this.abilities[0].getRandomDirection(), diameter);
+            let newDave = new Dave(this.PosSpawnY(diameter, canvas_width, i, numBots),this.PosSpawnX(diameter, canvas_height, i, numBots),currentColor.name,i ,this.abilities[0].getRandomDirection(), diameter);
             this.bots.push(newDave);
         }
          
@@ -32,6 +32,23 @@ export class Swarm {
         //muss irgendwie überprüfbar sein
         this.endConditions = endConditions;
         console.log("Swarm Construction Completed");
+    }
+
+    PosSpawnX(from, to, nr, numBots){    
+        let numPerRow = Math.ceil(Math.sqrt(numBots));
+        let interval = Math.floor(to / numPerRow);
+        let pos = Math.floor(nr / numPerRow);        
+        let val = from + pos * interval;
+        return val;
+    }
+
+
+    PosSpawnY(from, to, nr, numBots){    
+        let numPerRow = Math.ceil(Math.sqrt(numBots));
+        let interval = Math.floor(to / numPerRow);
+        let pos = nr % numPerRow;        
+        let val = from + pos *interval;
+        return val;
     }
 
     randPos(from ,to){
