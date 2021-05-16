@@ -19,28 +19,14 @@ export class Swarm {
 
         //array type bots
         this.bots = [];
-        this.pickedColors = [];
         for (let i = 0; i < numBots; i++) {                      
             // WILD color ist aktiviert
             var currentColor = {name: color.getWildColor(), number: 1};
             let newDave = new Dave(this.randPos(diameter,canvas_width-diameter),this.randPos(diameter,canvas_height-diameter),currentColor.name,i ,this.abilities[0].getRandomDirection(), diameter);
             this.bots.push(newDave);
-            var ind = this.pickedColors.indexOf(currentColor.name);
-            if (ind === -1){
-                this.pickedColors.push(currentColor);
-                console.log("not found");
-                ind = this.pickedColors.length-1;
-            }
-            else {
-                this.pickedColors[ind].name++;
-            }
-            console.log("index:" + ind);
-            console.log("expected: " + currentColor.name);
-            console.log("color: " + this.pickedColors[ind].name);
         }
-        console.log(this.pickedColors);
          
-        this.taskCompleted = false;
+        this.tasksCompleted = false;
         //irgendein array aber noch nicht sicher was da drin sein soll
         //evtl eine neue klasse?
         //muss irgendwie überprüfbar sein
@@ -53,11 +39,19 @@ export class Swarm {
         return val;
     }
 
+    // This function draws each bot while simultaniously tracking the colors present in the swarm
     draw(sk){
+        let colorsInSwarm = new Set();
         this.bots.forEach((bot)=>{
+            colorsInSwarm.add(bot.colors);
             bot.draw(sk);
         });
+        if ((colorsInSwarm.size === 1) && (this.endConditions.includes("swarmIsMonochrome"))){
+            this.endConditions[this.endConditions.indexOf("swarmIsMonochrome")] = "completed";
+            console.log("Swarm is monochrome");
+        }
     }
+
     addBot(bot) {
         this.bots.push(bot);
         this.numBots += 1;
@@ -66,24 +60,20 @@ export class Swarm {
     //early idea on how a swarm can know if all tasks are completed
     //obv not finished!
     checkTaskCompletion() {
-
-        this.endConditions.forEach(element => {
-            if(element == "completed Task") {
-
-            }
-            else{
+        for (let i = 0; i < this.endConditions.length; i++){
+            if (this.endConditions[i] !== "completed")
                 return false;
-            }
-        });
+        }
         return true;
-
     }
+    
     updateStatus() {
-        if(this.checkTaskCompletion) {
-            this.taskCompleted = true;
+        if(this.checkTaskCompletion()) {
+            console.log("tasks completed");
+            this.tasksCompleted = true;
         }
         else{
-            this.taskCompleted = false;
+            this.tasksCompleted = false;
         }
     }
 

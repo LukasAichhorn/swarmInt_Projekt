@@ -113,7 +113,8 @@ export function addToogleBtn(target, name, type, id, labelText, checked) {
 function initSim(simSetup){
   let botCount = simSetup[0]["value"];
   console.log("botcount: "+ botCount);
-  swarm = new Swarm(parseInt(botCount),"none");
+  let endConditions = ["swarmIsMonochrome"];
+  swarm = new Swarm(parseInt(botCount), endConditions);
   
   console.log(swarm);
   }
