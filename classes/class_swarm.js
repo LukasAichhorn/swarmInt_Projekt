@@ -11,10 +11,10 @@ import {canvas_width, canvas_height} from "../settings/constants.js";
 
 export class Swarm {    
 
-    constructor(numBots, endConditions) {
+    constructor(numBots, selectedAbilities, endConditions) {
         this.numBots = numBots;
         let color = new color_generator; 
-        this.abilities = this.getSelectedAbilities();
+        this.abilities = this.getSelectedAbilities(selectedAbilities);
         let diameter = 10;
         //array type bots
         this.bots = [];
@@ -86,24 +86,22 @@ export class Swarm {
         }
     }
 
-    getSelectedAbilities() {
-        //selection shoude be parameter
-        //should be enums instead of magic numbers
-        let selection = [1,2,3,4];
+    getSelectedAbilities(selectedAbilities) {
+
 
         let abilities = [];
 
-        if(selection.includes(1))
+        if(selectedAbilities.includes(1))
             abilities.push(new move());
         
-        if(selection.includes(2))
+        if(selectedAbilities.includes(2))
             abilities.push(new WallDetector());
 
-        if(selection.includes(3))
-            abilities.push(new ColorChanger());
-        
-        if(selection.includes(4))
+        if(selectedAbilities.includes(3))
             abilities.push(new CollisionTreeDetection());
+        
+        if(selectedAbilities.includes(4))
+            abilities.push(new ColorChanger());
 
         return abilities;
 

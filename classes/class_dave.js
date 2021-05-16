@@ -118,7 +118,7 @@ var namesList = [
     "Flupsi",
     "Betti",
     "Jesus",
-    "John Schnee",
+    "Jon Schnee",
     "Aragorn",
     "Gimli",
     "Prince Harry",
