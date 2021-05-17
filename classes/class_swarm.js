@@ -11,12 +11,11 @@ import {canvas_width, canvas_height} from "../settings/constants.js";
 
 export class Swarm {    
 
-    constructor(numBots, endConditions) {
+    constructor(numBots, selectedAbilities, endConditions) {
         this.numBots = numBots;
         let color = new color_generator; 
-        this.abilities = [new move(), new WallDetector(), new ColorChanger(), new CollisionTreeDetection()];
+        this.abilities = this.getSelectedAbilities(selectedAbilities);
         let diameter = 10;
-
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      
@@ -94,6 +93,29 @@ export class Swarm {
         }
     }
 
+    getSelectedAbilities(selectedAbilities) {
+
+
+        let abilities = [];
+
+        if(selectedAbilities.includes(1))
+            abilities.push(new move());
+        
+        if(selectedAbilities.includes(2))
+            abilities.push(new WallDetector());
+
+        if(selectedAbilities.includes(3))
+            abilities.push(new CollisionTreeDetection());
+        
+        if(selectedAbilities.includes(4))
+            abilities.push(new ColorChanger());
+
+        return abilities;
+
+
+
+    }
+
 
     setBotStates(sk){
        for (let ability = 0; ability < this.abilities.length; ability++) {
@@ -123,4 +145,6 @@ export class Swarm {
         return true;
         
      }
+
+
 }
