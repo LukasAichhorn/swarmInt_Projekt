@@ -34,10 +34,20 @@ let s = (sk) => {
         let cnv =sk.createCanvas(canvas_width, canvas_height);
         cnv.parent("Canvas-container");
       sk.background("#F9F9F9"); // Set line drawing color to white
+      sk.line(2, 2, 2, 400);
+      sk.line(2, 2, 720, 2);
+      sk.line(720, 2, 720, 400);
+      sk.line(2, 400, 720, 400);
       sk.frameRate(30);
     }
 
     sk.draw =  async () =>{
+     
+      // sk.line(2, 2, 2, 400);
+      // sk.line(2, 2, 720, 2);
+      // sk.line(720, 2, 720, 400);
+      // sk.line(2, 400, 720, 400);
+     
         if(swarm!= null){
           sk.background("#F9F9F9");
 
@@ -46,12 +56,13 @@ let s = (sk) => {
           await swarm.excecuteAbilities(sk);
          swarm.draw(sk);
          swarm.updateStatus();
+         
          if (swarm.tasksCompleted){
+           alert("Monochrome");
            sk.noLoop();        
          }
             
-            //sk.line(2, 2, 2, 400);
-            //sk.line(2, 2, 720, 2);
+            
          }  
     }
 

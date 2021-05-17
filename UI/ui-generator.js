@@ -147,7 +147,7 @@ export function renderSubmitSection(target,text,btnType){
         let speedSlider = document.getElementById("speedRange");
         speedSlider.disabled = false;
         document.getElementById("currentSpeed").hidden;
-        speedDescription.hidden = false;
+        //speedDescription.hidden = false;
     });
     c.append(b);
 

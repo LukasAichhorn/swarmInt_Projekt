@@ -62,6 +62,7 @@ export class Swarm {
         this.bots.forEach((bot)=>{
             bot.speed = this.speed;
             bot.draw(sk);
+            colorsInSwarm.add(bot.colors);
         });
         if ((colorsInSwarm.size === 1) && (this.endConditions.includes("swarmIsMonochrome"))){
             this.endConditions[this.endConditions.indexOf("swarmIsMonochrome")] = "completed";

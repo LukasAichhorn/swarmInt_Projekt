@@ -28895,6 +28895,15 @@ var global = arguments[3];
     }]
   }, {}, [245])(245);
 });
+},{}],"ressources/dave_names.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.namesList = void 0;
+var namesList = ["Dave", "Lukas", "Yasmine", "Johannes", "JaCob", "Doris", "Paolo", "Angela Merkel", "Die Dohnal", "Hugo", "Mortimer", "Timothy", "Sandra", "Maria", "Magdalena", "Ingrid", "Nelly", "JaKob", "Sophie", "Gerald", "Frau Huber", "Babsi", "Roland", "Klaus", "Norbert", "Scooter", "Orlando", "Virginia Woolf", "Queen Elisabeth", "Nora", "Tom", "Bimbolino", "Ronaldinho", "Flupsi", "Betti", "Jesus", "John Schnee", "Aragorn", "Gimli", "Prince Harry", "Maria Magdalena", "Scotty", "Bulli", "Betti", "Rudi", "Herwig", "Verena", "Wolfgang", "Stefan", "Stephanie", "Alex", "Ferdl", "Franzl", "Sissi", "Göthe", "Pam", "Sigi", "Beate", "Klenk", "Mimi", "Rüdiger", "Funny", "Aslan", "Ludwig", "Wilhelm", "Emmerich", "Lutz", "Simon", "Simone", "Ilse", "Rachel", "Ross", "She-ra", "Adora", "Cornelia", "Francis", "Malcolm", "Sugar Pie", "Nadine", "Ridi"];
+exports.namesList = namesList;
 },{}],"classes/class_dave.js":[function(require,module,exports) {
 "use strict";
 
@@ -28904,6 +28913,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.Dave = void 0;
 
 require("p5");
+
+var _dave_names = require("../ressources/dave_names");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28923,7 +28934,6 @@ var Dave = /*#__PURE__*/function () {
     this.randColor = Math.floor(Math.random() * 5 + 0);
     this.id = id;
     this.speed = 2;
-    
     this.size = diameter;
     this.states = {
       wall: false,
@@ -28932,19 +28942,19 @@ var Dave = /*#__PURE__*/function () {
     }; //this.abilities = abilities;
 
     this.direction = direction;
-    var NamesListIndex = getRandomInt(0, namesList.length);
-    this.name = namesList[NamesListIndex]; //Gewährleistung der "Uniquness" des Names mithilfe einer nachfolgenden Nummer
+    var NamesListIndex = getRandomInt(0, _dave_names.namesList.length);
+    this.name = _dave_names.namesList[NamesListIndex]; //Gewährleistung der "Uniquness" des Names mithilfe einer nachfolgenden Nummer
     //letzen Buchstaben von Namen 
 
     var lastChar = this.name[this.name.length - 1]; //Schauen ob letzter Buchstabe eine Zahl ist
 
     if (isNaN(parseInt(lastChar))) {
       //Wenn nicht wird eine 2 im namesList array ergänzt
-      namesList[NamesListIndex] += " 2";
+      _dave_names.namesList[NamesListIndex] += " 2";
     } else {
       //Wenn letzter Buchstabe eine Zahl ist, wird sie erhöht
       var newLastChar = parseInt(lastChar) + 1;
-      namesList[NamesListIndex] = namesList[NamesListIndex].replace(lastChar, newLastChar);
+      _dave_names.namesList[NamesListIndex] = _dave_names.namesList[NamesListIndex].replace(lastChar, newLastChar);
     }
 
     console.log("I am ", this.name, "!");
@@ -28992,9 +29002,7 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
 }
-
-var namesList = ["Dave", "Lukas", "Yasmine", "Johannes", "JaCob", "Doris", "Paolo", "Angela Merkel", "Die Dohnal", "Hugo", "Mortimer", "Timothy", "Sandra", "Maria", "Magdalena", "Ingrid", "Nelly", "JaKob", "Sophie", "Gerald", "Frau Huber", "Babsi", "Roland", "Klaus", "Norbert", "Scooter", "Orlando", "Virginia Woolf", "Queen Elisabeth", "Nora", "Tom", "Bimbolino", "Ronaldinho", "Flupsi", "Betti", "Jesus", "Jon Schnee", "Aragorn", "Gimli", "Prince Harry", "Maria Magdalena", "Scotty", "Bulli", "Betti", "Rudi", "Herwig", "Verena", "Wolfgang", "Stefan", "Stephanie", "Alex", "Ferdl", "Franzl", "Sissi", "Göthe", "Pam", "Sigi", "Beate", "Klenk", "Mimi", "Rüdiger", "Funny", "Aslan", "Ludwig", "Wilhelm", "Emmerich", "Lutz", "Simon", "Simone", "Ilse", "Rachel", "Ross", "She-ra", "Adora", "Cornelia", "Francis", "Malcolm", "Sugar Pie", "Nadine", "Ridi"];
-},{"p5":"node_modules/p5/lib/p5.min.js"}],"classes/abilities/class_color_generator.js":[function(require,module,exports) {
+},{"p5":"node_modules/p5/lib/p5.min.js","../ressources/dave_names":"ressources/dave_names.js"}],"classes/abilities/class_color_generator.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30107,10 +30115,10 @@ var Swarm = /*#__PURE__*/function () {
     this.numBots = numBots;
     var color = new _class_color_generator.color_generator();
     this.abilities = this.getSelectedAbilities(selectedAbilities);
+    this.abilities.push(new _class_move.move());
     var diameter = 10; //array type bots
 
     this.bots = [];
-    this.pickedColors = [];
 
     for (var i = 0; i < numBots; i++) {
       // WILD color ist aktiviert
@@ -30118,46 +30126,60 @@ var Swarm = /*#__PURE__*/function () {
         name: color.getWildColor(),
         number: 1
       };
-      var newDave = new _class_dave.Dave(this.randPos(diameter, _constants.canvas_width - diameter), this.randPos(diameter, _constants.canvas_height - diameter), currentColor.name, i, this.abilities[0].getRandomDirection(), diameter);
+      var newDave = new _class_dave.Dave(this.PosSpawnY(diameter, _constants.canvas_width, i, numBots), this.PosSpawnX(diameter, _constants.canvas_height, i, numBots), currentColor.name, i, this.abilities[this.abilities.length - 1].getRandomDirection(), diameter);
       this.bots.push(newDave);
-      var ind = this.pickedColors.indexOf(currentColor.name);
-
-      if (ind === -1) {
-        this.pickedColors.push(currentColor);
-        console.log("not found");
-        ind = this.pickedColors.length - 1;
-      } else {
-        this.pickedColors[ind].name++;
-      }
-
-      console.log("index:" + ind);
-      console.log("expected: " + currentColor.name);
-      console.log("color: " + this.pickedColors[ind].name);
     }
 
     this.taskCompleted = false;
     this.speed = 2; //irgendein array aber noch nicht sicher was da drin sein soll
-    console.log(this.pickedColors);
-   
+    //evtl eine neue klasse?
+    //muss irgendwie überprüfbar sein
+
     this.endConditions = endConditions;
     console.log("Swarm Construction Completed");
   }
 
   _createClass(Swarm, [{
+    key: "PosSpawnX",
+    value: function PosSpawnX(from, to, nr, numBots) {
+      var numPerRow = Math.ceil(Math.sqrt(numBots));
+      var interval = Math.floor(to / numPerRow);
+      var pos = Math.floor(nr / numPerRow);
+      var val = from + pos * interval;
+      return val;
+    }
+  }, {
+    key: "PosSpawnY",
+    value: function PosSpawnY(from, to, nr, numBots) {
+      var numPerRow = Math.ceil(Math.sqrt(numBots));
+      var interval = Math.floor(to / numPerRow);
+      var pos = nr % numPerRow;
+      var val = from + pos * interval;
+      return val;
+    }
+  }, {
     key: "randPos",
     value: function randPos(from, to) {
       var val = Math.floor(Math.random() * to + from);
       return val;
-    }
+    } // This function draws each bot while simultaniously tracking the colors present in the swarm
+
   }, {
     key: "draw",
     value: function draw(sk) {
       var _this = this;
 
+      var colorsInSwarm = new Set();
       this.bots.forEach(function (bot) {
         bot.speed = _this.speed;
         bot.draw(sk);
+        colorsInSwarm.add(bot.colors);
       });
+
+      if (colorsInSwarm.size === 1 && this.endConditions.includes("swarmIsMonochrome")) {
+        this.endConditions[this.endConditions.indexOf("swarmIsMonochrome")] = "completed";
+        console.log("Swarm is monochrome");
+      }
     }
   }, {
     key: "addBot",
@@ -30175,30 +30197,43 @@ var Swarm = /*#__PURE__*/function () {
   }, {
     key: "checkTaskCompletion",
     value: function checkTaskCompletion() {
-      this.endConditions.forEach(function (element) {
-        if (element == "completed Task") {} else {
-          return false;
-        }
-      });
+      for (var i = 0; i < this.endConditions.length; i++) {
+        if (this.endConditions[i] !== "completed") return false;
+      }
+
       return true;
     }
   }, {
     key: "updateStatus",
     value: function updateStatus() {
-      if (this.checkTaskCompletion) {
-        this.taskCompleted = true;
+      if (this.checkTaskCompletion()) {
+        console.log("tasks completed");
+        this.tasksCompleted = true;
       } else {
-        this.taskCompleted = false;
+        this.tasksCompleted = false;
       }
     }
   }, {
     key: "getSelectedAbilities",
     value: function getSelectedAbilities(selectedAbilities) {
+      console.log("inside get select");
+
+      function search(nameKey, myArray) {
+        for (var i = 0; i < myArray.length; i++) {
+          if (myArray[i].name === nameKey) {
+            return myArray[i];
+          }
+        }
+      }
+
       var abilities = [];
-      if (selectedAbilities.includes(1)) abilities.push(new _class_move.move());
-      if (selectedAbilities.includes(2)) abilities.push(new _class_wall_detector.WallDetector());
-      if (selectedAbilities.includes(3)) abilities.push(new _class_collosionTreeDetection.CollisionTreeDetection());
-      if (selectedAbilities.includes(4)) abilities.push(new _class_colorChanger.ColorChanger());
+
+      if (search("Wall Collision", selectedAbilities)) {
+        console.log("i add wall collision"), abilities.push(new _class_wall_detector.WallDetector());
+      }
+
+      if (search("Collision Detection", selectedAbilities)) abilities.push(new _class_collosionTreeDetection.CollisionTreeDetection());
+      if (search("Color Changer", selectedAbilities)) abilities.push(new _class_colorChanger.ColorChanger());
       return abilities;
     }
   }, {
@@ -30249,7 +30284,7 @@ var _class_swarm = require("../classes/class_swarm");
 // A $( document ).ready() block.
 var setupData = ["alog1", "algo2", "ALGO3"];
 exports.setupData = setupData;
-var abilityOptions = ["Move", "Wall Collision", "Collision Detection", "Color Changer"];
+var abilityOptions = ["Wall Collision", "Collision Detection", "Color Changer"];
 exports.abilityOptions = abilityOptions;
 var UI = $("#UI-container");
 exports.UI = UI;
@@ -30266,7 +30301,6 @@ function renderMenue(FORM, ToogleID, data) {
   if (ToogleID == "toogle-sb") {
     FORM.empty();
     addInputElem(FORM, "daveCount", "Dave Count:", "text", "insert amount of robots");
-    addInputElem(FORM, "SE1", "Something else", "text", "insert something else");
     renderAbilitySection(FORM, abilityOptions);
   } else {
     FORM.empty();
@@ -30324,12 +30358,8 @@ function initSim(simSetup) {
     speedDescription.innerHTML = newSpeed + " xSpeed";
   });
   var abilities = [];
-
-  for (var i = 2; i < simSetup.length; i++) {
-    abilities.push(parseInt(simSetup[i]["value"]));
-  }
-
-  exports.swarm = swarm = new _class_swarm.Swarm(parseInt(botCount), abilities, "none");
+  var endConditions = ["swarmIsMonochrome"];
+  exports.swarm = swarm = new _class_swarm.Swarm(parseInt(botCount), simSetup, endConditions);
   console.log(swarm);
 }
 
@@ -30342,8 +30372,7 @@ function renderSubmitSection(target, text, btnType) {
     initSim(simSetup);
     var speedSlider = document.getElementById("speedRange");
     speedSlider.disabled = false;
-    document.getElementById("currentSpeed").hidden;
-    speedDescription.hidden = false;
+    document.getElementById("currentSpeed").hidden; //speedDescription.hidden = false;
   });
   c.append(b);
   target.append(c);
@@ -30417,6 +30446,10 @@ $(document).ready(function () {
       cnv.parent("Canvas-container");
       sk.background("#F9F9F9"); // Set line drawing color to white
 
+      sk.line(2, 2, 2, 400);
+      sk.line(2, 2, 720, 2);
+      sk.line(720, 2, 720, 400);
+      sk.line(2, 400, 720, 400);
       sk.frameRate(30);
     };
 
@@ -30426,7 +30459,7 @@ $(document).ready(function () {
           switch (_context.prev = _context.next) {
             case 0:
               if (!(_uiGenerator.swarm != null)) {
-                _context.next = 7;
+                _context.next = 9;
                 break;
               }
 
@@ -30439,11 +30472,16 @@ $(document).ready(function () {
               return _uiGenerator.swarm.excecuteAbilities(sk);
 
             case 6:
-              _uiGenerator.swarm.draw(sk); //sk.line(2, 2, 2, 400);
-              //sk.line(2, 2, 720, 2);
+              _uiGenerator.swarm.draw(sk);
 
+              _uiGenerator.swarm.updateStatus();
 
-            case 7:
+              if (_uiGenerator.swarm.tasksCompleted) {
+                alert("Monochrome");
+                sk.noLoop();
+              }
+
+            case 9:
             case "end":
               return _context.stop();
           }
@@ -30495,7 +30533,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61493" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57687" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
