@@ -123,8 +123,9 @@ function initSim(simSetup){
   for(let i=2; i < simSetup.length;i++) {
     abilities.push(parseInt(simSetup[i]["value"]))
   }
+  let endConditions = ["swarmIsMonochrome"];
+  swarm = new Swarm(parseInt(botCount),abilities,endConditions);
 
-  swarm = new Swarm(parseInt(botCount),abilities,"none");
   
   console.log(swarm);
   }

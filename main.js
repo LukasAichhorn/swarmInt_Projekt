@@ -40,7 +40,10 @@ let s = (sk) => {
           await swarm.setBotStates(sk);
           await swarm.excecuteAbilities(sk);
          swarm.draw(sk);
-          
+         swarm.updateStatus();
+         if (swarm.tasksCompleted){
+           sk.noLoop();        
+         }
             
             //sk.line(2, 2, 2, 400);
             //sk.line(2, 2, 720, 2);
