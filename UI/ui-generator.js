@@ -3,7 +3,7 @@ import { Swarm } from "../classes/class_swarm";
 
 // A $( document ).ready() block.
 export const setupData = ["alog1", "algo2", "ALGO3"];
-export const abilityOptions = ["Move", "Wall Collision","Collision Detection", "Color Changer", ];
+export const abilityOptions = ["Wall Collision","Collision Detection", "Color Changer", ];
 export const UI = $("#UI-container");
 export var swarm;
 let form = $("<form></form>")
@@ -33,13 +33,7 @@ export function renderMenue(FORM,ToogleID,data) {
       "text",
       "insert amount of robots"
     );
-    addInputElem(
-      FORM,
-      "SE1",
-      "Something else",
-      "text",
-      "insert something else"
-    );
+    
 
     renderAbilitySection(
       FORM,
@@ -120,11 +114,9 @@ function initSim(simSetup){
   let botCount = simSetup[0]["value"];
   console.log("botcount: "+ botCount);
   let abilities = []
-  for(let i=2; i < simSetup.length;i++) {
-    abilities.push(parseInt(simSetup[i]["value"]))
-  }
+
   let endConditions = ["swarmIsMonochrome"];
-  swarm = new Swarm(parseInt(botCount),abilities,endConditions);
+  swarm = new Swarm(parseInt(botCount),simSetup,endConditions);
 
   
   console.log(swarm);

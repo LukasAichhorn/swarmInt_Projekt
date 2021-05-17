@@ -15,13 +15,14 @@ export class Swarm {
         this.numBots = numBots;
         let color = new color_generator; 
         this.abilities = this.getSelectedAbilities(selectedAbilities);
+        this.abilities.push(new move());
         let diameter = 10;
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      
             // WILD color ist aktiviert
             var currentColor = {name: color.getWildColor(), number: 1};
-            let newDave = new Dave(this.PosSpawnY(diameter, canvas_width, i, numBots),this.PosSpawnX(diameter, canvas_height, i, numBots),currentColor.name,i ,this.abilities[0].getRandomDirection(), diameter);
+            let newDave = new Dave(this.PosSpawnY(diameter, canvas_width, i, numBots),this.PosSpawnX(diameter, canvas_height, i, numBots),currentColor.name,i ,this.abilities[this.abilities.length-1].getRandomDirection(), diameter);
             this.bots.push(newDave);
         }
          
@@ -94,20 +95,28 @@ export class Swarm {
     }
 
     getSelectedAbilities(selectedAbilities) {
+    console.log("inside get select");
 
+    function search(nameKey, myArray){
+        for (var i=0; i < myArray.length; i++) {
+            if (myArray[i].name === nameKey) {
+                return myArray[i];
+            }
+        }
+    }
 
-        let abilities = [];
-
-        if(selectedAbilities.includes(1))
-            abilities.push(new move());
-        
-        if(selectedAbilities.includes(2))
+        let abilities = [];        
+                
+        if(search("Wall Collision", selectedAbilities)){
+            console.log("i add wall collision"),  
             abilities.push(new WallDetector());
+        }
+            
 
-        if(selectedAbilities.includes(3))
+        if(search("Collision Detection", selectedAbilities))
             abilities.push(new CollisionTreeDetection());
         
-        if(selectedAbilities.includes(4))
+        if(search("Color Changer", selectedAbilities))
             abilities.push(new ColorChanger());
 
         return abilities;
