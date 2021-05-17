@@ -25,8 +25,8 @@ export class Swarm {
             let newDave = new Dave(this.PosSpawnY(diameter, canvas_width, i, numBots),this.PosSpawnX(diameter, canvas_height, i, numBots),currentColor.name,i ,this.abilities[this.abilities.length-1].getRandomDirection(), diameter);
             this.bots.push(newDave);
         }
-         
-        this.tasksCompleted = false;
+        this.taskCompleted = false;
+        this.speed = 2;
         //irgendein array aber noch nicht sicher was da drin sein soll
         //evtl eine neue klasse?
         //muss irgendwie überprüfbar sein
@@ -60,7 +60,7 @@ export class Swarm {
     draw(sk){
         let colorsInSwarm = new Set();
         this.bots.forEach((bot)=>{
-            colorsInSwarm.add(bot.colors);
+            bot.speed = this.speed;
             bot.draw(sk);
         });
         if ((colorsInSwarm.size === 1) && (this.endConditions.includes("swarmIsMonochrome"))){
@@ -73,6 +73,11 @@ export class Swarm {
         this.bots.push(bot);
         this.numBots += 1;
     }
+
+    setSpeed(speed){
+        this.speed = speed;
+    }
+
 
     //early idea on how a swarm can know if all tasks are completed
     //obv not finished!
@@ -130,8 +135,10 @@ export class Swarm {
        for (let ability = 0; ability < this.abilities.length; ability++) {
           
            for (let bot = 0; bot < this.bots.length; bot++) {
-            
+
+                
                this.abilities[ability].checkStates(this.bots,this.bots[bot]);
+                
 
                
            }
@@ -144,7 +151,6 @@ export class Swarm {
         for (let ability = 0; ability < this.abilities.length; ability++) {
             
             for (let bot = 0; bot < this.bots.length; bot++) {
-                
                 
                 this.abilities[ability].execute(this.bots[bot],sk);
                 

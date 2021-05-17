@@ -113,6 +113,18 @@ function initSim(simSetup){
   console.log(simSetup)
   let botCount = simSetup[0]["value"];
   console.log("botcount: "+ botCount);
+  swarm = new Swarm(parseInt(botCount),"none");
+
+  //enabling speed slider
+  let speedSlider = document.getElementById("speedRange");
+  speedSlider.addEventListener("input", function(){
+    let newSpeed = parseFloat(speedSlider.value);
+    
+    swarm.setSpeed(newSpeed);
+    console.log(swarm);
+    let speedDescription = document.getElementById("currentSpeed");
+    speedDescription.innerHTML = newSpeed + " xSpeed";
+  });
   let abilities = []
 
   let endConditions = ["swarmIsMonochrome"];
@@ -132,6 +144,10 @@ export function renderSubmitSection(target,text,btnType){
         let simSetup =$("#UI-Form").serializeArray();
         console.log(simSetup);
         initSim(simSetup);
+        let speedSlider = document.getElementById("speedRange");
+        speedSlider.disabled = false;
+        document.getElementById("currentSpeed").hidden;
+        speedDescription.hidden = false;
     });
     c.append(b);
 

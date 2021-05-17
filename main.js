@@ -14,6 +14,11 @@ $(document).ready(function () {
   
  console.log(FORM);
 
+  
+ document.getElementById("speedRange").disabled = true;
+ document.getElementById("currentSpeed").hidden = true;
+        
+
   addToogleBtn(UI, "sandbox", "primary", "toogle-sb", "Sandbox Mode", false);
   addToogleBtn(UI, "predefinded", "primary", "toogle-pd", "predefined values",false);
 
