@@ -8,6 +8,7 @@ export class Dave {
         this.colors = colorInHex;
         this.randColor = Math.floor((Math.random() * 5) + 0);
         this.id = id;
+        this.speed = 2;
         this.size = 10;
         this.states ={
             wall:false,

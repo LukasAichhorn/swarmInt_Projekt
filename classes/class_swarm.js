@@ -24,6 +24,7 @@ export class Swarm {
             
         }
         this.taskCompleted = false;
+        this.speed = 2;
         //irgendein array aber noch nicht sicher was da drin sein soll
         //evtl eine neue klasse?
         //muss irgendwie überprüfbar sein
@@ -38,6 +39,7 @@ export class Swarm {
 
     draw(sk){
         this.bots.forEach((bot)=>{
+            bot.speed = this.speed;
             bot.draw(sk);
         });
     }
@@ -45,6 +47,11 @@ export class Swarm {
         this.bots.push(bot);
         this.numBots += 1;
     }
+
+    setSpeed(speed){
+        this.speed = speed;
+    }
+
 
     //early idea on how a swarm can know if all tasks are completed
     //obv not finished!
@@ -75,8 +82,10 @@ export class Swarm {
        for (let ability = 0; ability < this.abilities.length; ability++) {
           
            for (let bot = 0; bot < this.bots.length; bot++) {
-            
+
+                
                this.abilities[ability].checkStates(this.bots,this.bots[bot]);
+                
 
                
            }
@@ -89,7 +98,6 @@ export class Swarm {
         for (let ability = 0; ability < this.abilities.length; ability++) {
             
             for (let bot = 0; bot < this.bots.length; bot++) {
-                
                 
                 this.abilities[ability].execute(this.bots[bot],sk);
                 

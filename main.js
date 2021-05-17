@@ -4,6 +4,7 @@ import  'p5';
 
 
 $(document).ready(function () {
+
 const canvas_width = 720;
 const canvas_height = 400;
 
@@ -12,6 +13,11 @@ const canvas_height = 400;
   console.log("Hy from the Ui-generator");
   
  console.log(FORM);
+
+  
+ document.getElementById("speedRange").disabled = true;
+ document.getElementById("currentSpeed").hidden = true;
+        
 
   addToogleBtn(UI, "sandbox", "primary", "toogle-sb", "Sandbox Mode", false);
   addToogleBtn(UI, "predefinded", "primary", "toogle-pd", "predefined values",false);

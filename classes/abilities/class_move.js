@@ -38,7 +38,7 @@ export class move {
             //n.rotate(sk.HALF_PI);
             bot.direction.rotate(sk.HALF_PI);          //console.log(`${bot.name} change direction because of collision`)
         }
-       var newPos = this.moveInDirection(bot, sk, 2);
+       var newPos = this.moveInDirection(bot, sk, bot.speed);
        bot.position = newPos;
     }
     checkStates(){

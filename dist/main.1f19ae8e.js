@@ -172,7 +172,7 @@ var move = /*#__PURE__*/function () {
         bot.direction.rotate(sk.HALF_PI); //console.log(`${bot.name} change direction because of collision`)
       }
 
-      var newPos = this.moveInDirection(bot, sk, 2);
+      var newPos = this.moveInDirection(bot, sk, bot.speed);
       bot.position = newPos;
     }
   }, {
@@ -28903,6 +28903,7 @@ var Dave = /*#__PURE__*/function () {
     this.colors = colorInHex;
     this.randColor = Math.floor(Math.random() * 5 + 0);
     this.id = id;
+    this.speed = 2;
     this.size = 10;
     this.states = {
       wall: false,
@@ -30091,7 +30092,8 @@ var Swarm = /*#__PURE__*/function () {
       this.bots.push(newDave);
     }
 
-    this.taskCompleted = false; //irgendein array aber noch nicht sicher was da drin sein soll
+    this.taskCompleted = false;
+    this.speed = 2; //irgendein array aber noch nicht sicher was da drin sein soll
     //evtl eine neue klasse?
     //muss irgendwie überprüfbar sein
 
@@ -30108,7 +30110,10 @@ var Swarm = /*#__PURE__*/function () {
   }, {
     key: "draw",
     value: function draw(sk) {
+      var _this = this;
+
       this.bots.forEach(function (bot) {
+        bot.speed = _this.speed;
         bot.draw(sk);
       });
     }
@@ -30117,6 +30122,11 @@ var Swarm = /*#__PURE__*/function () {
     value: function addBot(bot) {
       this.bots.push(bot);
       this.numBots += 1;
+    }
+  }, {
+    key: "setSpeed",
+    value: function setSpeed(speed) {
+      this.speed = speed;
     } //early idea on how a swarm can know if all tasks are completed
     //obv not finished!
 
@@ -30248,7 +30258,16 @@ function addToogleBtn(target, name, type, id, labelText, checked) {
 function initSim(simSetup) {
   var botCount = simSetup[0]["value"];
   console.log("botcount: " + botCount);
-  exports.swarm = swarm = new _class_swarm.Swarm(parseInt(botCount), "none");
+  exports.swarm = swarm = new _class_swarm.Swarm(parseInt(botCount), "none"); //enabling speed slider
+
+  var speedSlider = document.getElementById("speedRange");
+  speedSlider.addEventListener("input", function () {
+    var newSpeed = parseFloat(speedSlider.value);
+    swarm.setSpeed(newSpeed);
+    console.log(swarm);
+    var speedDescription = document.getElementById("currentSpeed");
+    speedDescription.innerHTML = newSpeed + " xSpeed";
+  });
   console.log(swarm);
 }
 
@@ -30259,6 +30278,10 @@ function renderSubmitSection(target, text, btnType) {
     var simSetup = $("#UI-Form").serializeArray();
     console.log(simSetup);
     initSim(simSetup);
+    var speedSlider = document.getElementById("speedRange");
+    speedSlider.disabled = false;
+    document.getElementById("currentSpeed").hidden;
+    speedDescription.hidden = false;
   });
   c.append(b);
   target.append(c);
@@ -30286,6 +30309,8 @@ $(document).ready(function () {
   var ToogleID = "toogle-sb";
   console.log("Hy from the Ui-generator");
   console.log(_uiGenerator.FORM);
+  document.getElementById("speedRange").disabled = true;
+  document.getElementById("currentSpeed").hidden = true;
   (0, _uiGenerator.addToogleBtn)(_uiGenerator.UI, "sandbox", "primary", "toogle-sb", "Sandbox Mode", false);
   (0, _uiGenerator.addToogleBtn)(_uiGenerator.UI, "predefinded", "primary", "toogle-pd", "predefined values", false);
 
@@ -30379,7 +30404,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55474" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58306" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
