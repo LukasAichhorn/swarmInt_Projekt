@@ -1,15 +1,16 @@
 import  'p5';
+import { namesList } from '../ressources/dave_names';
 
 export class Dave {
 
-    constructor(posx, posy, colorInHex, id, direction) {
+    constructor(posx, posy, colorInHex, id, direction, diameter) {
 
-        this.position = [posx, posy];
+        this.position = {x:posx, y:posy};
         this.colors = colorInHex;
         this.randColor = Math.floor((Math.random() * 5) + 0);
         this.id = id;
         this.speed = 2;
-        this.size = 10;
+        this.size = diameter;
         this.states ={
             wall:false,
             colliding: false,
@@ -49,11 +50,11 @@ export class Dave {
          
          //set draw color to bots current color;
         sk.fill(this.colors);     
-        sk.circle(this.position[0], this.position[1], this.size);
+        sk.circle(this.position.x, this.position.y, this.size);
         
         let s = this.name;
         sk.textSize(10);
-        sk.text(s,this.position[0]- this.size ,this.position[1]- this.size);
+        sk.text(s,this.position.x - this.size ,this.position.y - this.size);
         
         
 
@@ -82,84 +83,4 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var namesList = [
-    "Dave",
-    "Lukas",
-    "Yasmine",
-    "Johannes",
-    "JaCob",
-    "Doris",
-    "Paolo",
-    "Angela Merkel",
-    "Hugo",
-    "Mortimer",
-    "Timothy",
-    "Sandra",
-    "Maria",
-    "Magdalena",
-    "Ingrid",
-    "Nelly",
-    "JaKob",
-    "Sophie",
-    "Gerald",
-    "Frau Huber",
-    "Babsi",
-    "Roland",
-    "Klaus",
-    "Norbert",
-    "Scooter",
-    "Orlando",
-    "Virginia Woolf",
-    "Queen Elisabeth",
-    "Nora",
-    "Tom",
-    "Bimbolino",
-    "Ronaldinho",
-    "Flupsi",
-    "Betti",
-    "Jesus",
-    "John Schnee",
-    "Aragorn",
-    "Gimli",
-    "Prince Harry",
-    "Maria Magdalena",
-    "Scotty",
-    "Bulli",
-    "Betti",
-    "Rudi",
-    "Herwig",
-    "Verena",
-    "Wolfgang",
-    "Stefan",
-    "Stephanie",
-    "Alex",
-    "Ferdl",
-    "Franzl",
-    "Sissi",
-    "Göthe",
-    "Pam",
-    "Sigi",
-    "Beate",
-    "Klenk",
-    "Mimi",
-    "Rüdiger",
-    "Funny",
-    "Aslan",
-    "Ludwig",
-    "Wilhelm",
-    "Emmerich",
-    "Lutz",
-    "Simon",
-    "Simone",
-    "Ilse",
-    "Rachel",
-    "Ross",
-    "She-ra",
-    "Adora",
-    "Cornelia",
-    "Francis",
-    "Malcolm",
-    "Sugar Pie",
-    "Nadine",
-    "Ridi"
-];
+

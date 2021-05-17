@@ -3,6 +3,7 @@ import { Swarm } from "../classes/class_swarm";
 
 // A $( document ).ready() block.
 export const setupData = ["alog1", "algo2", "ALGO3"];
+export const abilityOptions = ["Move", "Wall Collision","Collision Detection", "Color Changer", ];
 export const UI = $("#UI-container");
 export var swarm;
 let form = $("<form></form>")
@@ -40,7 +41,11 @@ export function renderMenue(FORM,ToogleID,data) {
       "insert something else"
     );
 
-    renderAbilitySection();
+    renderAbilitySection(
+      FORM,
+      abilityOptions
+
+    );
 
     }
       
@@ -111,6 +116,7 @@ export function addToogleBtn(target, name, type, id, labelText, checked) {
 }
 
 function initSim(simSetup){
+  console.log(simSetup)
   let botCount = simSetup[0]["value"];
   console.log("botcount: "+ botCount);
   swarm = new Swarm(parseInt(botCount),"none");
@@ -125,6 +131,13 @@ function initSim(simSetup){
     let speedDescription = document.getElementById("currentSpeed");
     speedDescription.innerHTML = newSpeed + " xSpeed";
   });
+  let abilities = []
+  for(let i=2; i < simSetup.length;i++) {
+    abilities.push(parseInt(simSetup[i]["value"]))
+  }
+  let endConditions = ["swarmIsMonochrome"];
+  swarm = new Swarm(parseInt(botCount),abilities,endConditions);
+
   
   console.log(swarm);
   }
@@ -149,9 +162,49 @@ export function renderSubmitSection(target,text,btnType){
     target.append(c);
 }
 
-export function renderAbilitySection(){
+export function renderAbilitySection(target, optionList){
+
+  let div = $('<div class="m-3 dropdown">');
+  let b =$("<button />")
+  .attr("type","button")
+  .attr("class","btn btn-secondary dropdown-toggle")
+  .attr("id","abilitiesMenuButton")
+  .attr("data-toggle","dropdown")
+  .attr("aria-haspopup","true")
+  .attr("aria-expanded","false")
+  .text("Select Abilities");
+  let list = $("<ul />")
+  list.attr("class","dropdown-menu keep-open")
+  let index = 1;
+  optionList.forEach(option => {
+    
+    let li = $("<li />")
+    let la = $("<label />")
+    let i = $("<input/>")
+    i.attr("type","checkbox")
+    i.attr("name",option)
+    i.attr("value", index)
+    la.text(" "+option)
+    la.attr("class","dropdown-item")
+
+    la.append(i),
+    li.append(la),
+    list.append(li);
+    index++;
+  });
 
 
+  div.append(b)
+  div.append(list)
+
+  target.append(div)
+
+$('.dropdown-toggle').on('click', function () {
+    $(this).next().toggle();
+  });
+$('.dropdown-menu.keep-open').on('click', function (e) {
+    e.stopPropagation();
+  });
 }
 export function createSetupArray(){
 

@@ -6,22 +6,23 @@ import { WallDetector } from "./abilities/class_wall_detector";
 import { ColorChanger } from "./abilities/class_colorChanger";
 import { CollisionTreeDetection } from "./abilities/class_collosionTreeDetection";
 import { Grow } from "./abilities/class_grow";
+import {canvas_width, canvas_height} from "../settings/constants.js";
 
 
 export class Swarm {    
 
-    constructor(numBots, endConditions) {
+    constructor(numBots, selectedAbilities, endConditions) {
         this.numBots = numBots;
         let color = new color_generator; 
-        this.abilities = [new move(),new WallDetector(),new ColorChanger(),new CollisionTreeDetection()];
-        
+        this.abilities = this.getSelectedAbilities(selectedAbilities);
+        let diameter = 10;
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      
             // WILD color ist aktiviert
-            let newDave = new Dave(this.randPos(1,720),this.randPos(1,400),color.getWildColor(),i ,this.abilities[0].getRandomDirection());
+            var currentColor = {name: color.getWildColor(), number: 1};
+            let newDave = new Dave(this.PosSpawnY(diameter, canvas_width, i, numBots),this.PosSpawnX(diameter, canvas_height, i, numBots),currentColor.name,i ,this.abilities[0].getRandomDirection(), diameter);
             this.bots.push(newDave);
-            
         }
         this.taskCompleted = false;
         this.speed = 2;
@@ -32,17 +33,41 @@ export class Swarm {
         console.log("Swarm Construction Completed");
     }
 
+    PosSpawnX(from, to, nr, numBots){    
+        let numPerRow = Math.ceil(Math.sqrt(numBots));
+        let interval = Math.floor(to / numPerRow);
+        let pos = Math.floor(nr / numPerRow);        
+        let val = from + pos * interval;
+        return val;
+    }
+
+
+    PosSpawnY(from, to, nr, numBots){    
+        let numPerRow = Math.ceil(Math.sqrt(numBots));
+        let interval = Math.floor(to / numPerRow);
+        let pos = nr % numPerRow;        
+        let val = from + pos *interval;
+        return val;
+    }
+
     randPos(from ,to){
         let val = Math.floor((Math.random() * to) + from);
         return val;
     }
 
+    // This function draws each bot while simultaniously tracking the colors present in the swarm
     draw(sk){
+        let colorsInSwarm = new Set();
         this.bots.forEach((bot)=>{
             bot.speed = this.speed;
             bot.draw(sk);
         });
+        if ((colorsInSwarm.size === 1) && (this.endConditions.includes("swarmIsMonochrome"))){
+            this.endConditions[this.endConditions.indexOf("swarmIsMonochrome")] = "completed";
+            console.log("Swarm is monochrome");
+        }
     }
+
     addBot(bot) {
         this.bots.push(bot);
         this.numBots += 1;
@@ -56,25 +81,44 @@ export class Swarm {
     //early idea on how a swarm can know if all tasks are completed
     //obv not finished!
     checkTaskCompletion() {
-
-        this.endConditions.forEach(element => {
-            if(element == "completed Task") {
-
-            }
-            else{
+        for (let i = 0; i < this.endConditions.length; i++){
+            if (this.endConditions[i] !== "completed")
                 return false;
-            }
-        });
+        }
         return true;
-
     }
+    
     updateStatus() {
-        if(this.checkTaskCompletion) {
-            this.taskCompleted = true;
+        if(this.checkTaskCompletion()) {
+            console.log("tasks completed");
+            this.tasksCompleted = true;
         }
         else{
-            this.taskCompleted = false;
+            this.tasksCompleted = false;
         }
+    }
+
+    getSelectedAbilities(selectedAbilities) {
+
+
+        let abilities = [];
+
+        if(selectedAbilities.includes(1))
+            abilities.push(new move());
+        
+        if(selectedAbilities.includes(2))
+            abilities.push(new WallDetector());
+
+        if(selectedAbilities.includes(3))
+            abilities.push(new CollisionTreeDetection());
+        
+        if(selectedAbilities.includes(4))
+            abilities.push(new ColorChanger());
+
+        return abilities;
+
+
+
     }
 
 
@@ -107,4 +151,6 @@ export class Swarm {
         return true;
         
      }
+
+
 }

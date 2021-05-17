@@ -10,7 +10,6 @@ export class ColorChanger{
     }
 
     checkStates(bots,bot){
-        
     }
 
     execute(bot){

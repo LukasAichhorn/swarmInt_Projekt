@@ -1,12 +1,12 @@
 import { Swarm } from "./classes/class_swarm";
 import { addToogleBtn, renderMenue, renderSubmitSection,setupData,UI,FORM,swarm } from "./UI/ui-generator";
 import  'p5';
+import {canvas_width, canvas_height} from "./settings/constants.js";
 
 
 $(document).ready(function () {
-
-const canvas_width = 720;
-const canvas_height = 400;
+//const canvas_width = 720;
+//const canvas_height = 400;
 
     let ToogleID = "toogle-sb";
 
@@ -45,14 +45,16 @@ let s = (sk) => {
           await swarm.setBotStates(sk);
           await swarm.excecuteAbilities(sk);
          swarm.draw(sk);
-          
-          
+         swarm.updateStatus();
+         if (swarm.tasksCompleted){
+           sk.noLoop();        
+         }
             
             //sk.line(2, 2, 2, 400);
             //sk.line(2, 2, 720, 2);
          }  
     }
-    
+
       sk.keyPressed = ( )=>{
       if(sk.keyCode === sk.LEFT_ARROW ){
           console.log("pause");
@@ -62,9 +64,8 @@ let s = (sk) => {
         if(sk.keyCode === sk.RIGHT_ARROW ){
           console.log("play");
           sk.loop();
+        }
       }
-
-    }
 
 }
 const P5 = new p5(s);

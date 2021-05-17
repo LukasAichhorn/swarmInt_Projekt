@@ -117,13 +117,26 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"classes/abilities/class_move.js":[function(require,module,exports) {
+})({"settings/constants.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.canvas_height = exports.canvas_width = void 0;
+var canvas_width = 720;
+exports.canvas_width = canvas_width;
+var canvas_height = 400;
+exports.canvas_height = canvas_height;
+},{}],"classes/abilities/class_move.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.move = void 0;
+
+var _constants = require("../../settings/constants.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -142,15 +155,18 @@ var move = /*#__PURE__*/function () {
     key: "moveInDirection",
     value: function moveInDirection(bot, sk, speed) {
       //console.log(sk.HALF_PI);
-      if (bot.position[0] <= 1 || bot.position[0] >= 719) {
+      if (bot.position.x <= 1 || bot.position.x >= _constants.canvas_width - 1) {
         bot.direction.rotate(sk.HALF_PI);
-      } else if (bot.position[1] <= 1 || bot.position[1] >= 399) {
+      } else if (bot.position.y <= 1 || bot.position.y >= _constants.canvas_height - 1) {
         bot.direction.rotate(sk.HALF_PI);
       }
 
-      var posx = bot.position[0] + bot.direction.x * speed;
-      var posy = bot.position[1] + bot.direction.y * speed;
-      return [posx, posy];
+      var posx = bot.position.x + bot.direction.x * speed;
+      var posy = bot.position.y + bot.direction.y * speed;
+      return {
+        x: posx,
+        y: posy
+      };
     }
   }, {
     key: "getRandomDirection",
@@ -184,7 +200,7 @@ var move = /*#__PURE__*/function () {
 }();
 
 exports.move = move;
-},{}],"node_modules/p5/lib/p5.min.js":[function(require,module,exports) {
+},{"../../settings/constants.js":"settings/constants.js"}],"node_modules/p5/lib/p5.min.js":[function(require,module,exports) {
 var define;
 var global = arguments[3];
 /*! p5.js v1.3.1 March 28, 2021 */
@@ -28896,15 +28912,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Dave = /*#__PURE__*/function () {
-  function Dave(posx, posy, colorInHex, id, direction) {
+  function Dave(posx, posy, colorInHex, id, direction, diameter) {
     _classCallCheck(this, Dave);
 
-    this.position = [posx, posy];
+    this.position = {
+      x: posx,
+      y: posy
+    };
     this.colors = colorInHex;
     this.randColor = Math.floor(Math.random() * 5 + 0);
     this.id = id;
     this.speed = 2;
-    this.size = 10;
+    
+    this.size = diameter;
     this.states = {
       wall: false,
       colliding: false,
@@ -28935,10 +28955,10 @@ var Dave = /*#__PURE__*/function () {
     value: function draw(sk) {
       //set draw color to bots current color;
       sk.fill(this.colors);
-      sk.circle(this.position[0], this.position[1], this.size);
+      sk.circle(this.position.x, this.position.y, this.size);
       var s = this.name;
       sk.textSize(10);
-      sk.text(s, this.position[0] - this.size, this.position[1] - this.size);
+      sk.text(s, this.position.x - this.size, this.position.y - this.size);
     }
   }, {
     key: "getID",
@@ -28973,7 +28993,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var namesList = ["Dave", "Lukas", "Yasmine", "Johannes", "JaCob", "Doris", "Paolo", "Angela Merkel", "Hugo", "Mortimer", "Timothy", "Sandra", "Maria", "Magdalena", "Ingrid", "Nelly", "JaKob", "Sophie", "Gerald", "Frau Huber", "Babsi", "Roland", "Klaus", "Norbert", "Scooter", "Orlando", "Virginia Woolf", "Queen Elisabeth", "Nora", "Tom", "Bimbolino", "Ronaldinho", "Flupsi", "Betti", "Jesus", "John Schnee", "Aragorn", "Gimli", "Prince Harry", "Maria Magdalena", "Scotty", "Bulli", "Betti", "Rudi", "Herwig", "Verena", "Wolfgang", "Stefan", "Stephanie", "Alex", "Ferdl", "Franzl", "Sissi", "Göthe", "Pam", "Sigi", "Beate", "Klenk", "Mimi", "Rüdiger", "Funny", "Aslan", "Ludwig", "Wilhelm", "Emmerich", "Lutz", "Simon", "Simone", "Ilse", "Rachel", "Ross", "She-ra", "Adora", "Cornelia", "Francis", "Malcolm", "Sugar Pie", "Nadine", "Ridi"];
+var namesList = ["Dave", "Lukas", "Yasmine", "Johannes", "JaCob", "Doris", "Paolo", "Angela Merkel", "Die Dohnal", "Hugo", "Mortimer", "Timothy", "Sandra", "Maria", "Magdalena", "Ingrid", "Nelly", "JaKob", "Sophie", "Gerald", "Frau Huber", "Babsi", "Roland", "Klaus", "Norbert", "Scooter", "Orlando", "Virginia Woolf", "Queen Elisabeth", "Nora", "Tom", "Bimbolino", "Ronaldinho", "Flupsi", "Betti", "Jesus", "Jon Schnee", "Aragorn", "Gimli", "Prince Harry", "Maria Magdalena", "Scotty", "Bulli", "Betti", "Rudi", "Herwig", "Verena", "Wolfgang", "Stefan", "Stephanie", "Alex", "Ferdl", "Franzl", "Sissi", "Göthe", "Pam", "Sigi", "Beate", "Klenk", "Mimi", "Rüdiger", "Funny", "Aslan", "Ludwig", "Wilhelm", "Emmerich", "Lutz", "Simon", "Simone", "Ilse", "Rachel", "Ross", "She-ra", "Adora", "Cornelia", "Francis", "Malcolm", "Sugar Pie", "Nadine", "Ridi"];
 },{"p5":"node_modules/p5/lib/p5.min.js"}],"classes/abilities/class_color_generator.js":[function(require,module,exports) {
 "use strict";
 
@@ -29072,6 +29092,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WallDetector = void 0;
 
+var _constants = require("../../settings/constants");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -29088,11 +29110,11 @@ var WallDetector = /*#__PURE__*/function () {
   _createClass(WallDetector, [{
     key: "checkStates",
     value: function checkStates(bots, bot) {
-      if (bot.position[0] <= 1 || bot.position[0] >= 719) {
+      if (bot.position.x <= 1 || bot.position.x >= _constants.canvas_width - 1) {
         bot.states.wall = true; //console.log(`wall collosion for ${bot.name}`);
 
         return;
-      } else if (bot.position[1] <= 1 || bot.position[1] >= 399) {
+      } else if (bot.position.y <= 1 || bot.position.y >= _constants.canvas_height - 1) {
         bot.states.wall = true; // console.log(`wall collosion for ${bot.name}`)
 
         return;
@@ -29109,7 +29131,7 @@ var WallDetector = /*#__PURE__*/function () {
 }();
 
 exports.WallDetector = WallDetector;
-},{}],"classes/abilities/class_colorChanger.js":[function(require,module,exports) {
+},{"../../settings/constants":"settings/constants.js"}],"classes/abilities/class_colorChanger.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29983,7 +30005,7 @@ var CollisionTreeDetection = /*#__PURE__*/function () {
         //reset state
         if (notVisited.length >= 1) {
           notVisited.forEach(function (otherBot) {
-            if (_this.narrowDetection(bot, otherBot, bot.position[0], bot.position[1], otherBot.position[0], otherBot.position[1])) {
+            if (_this.narrowDetection(bot, otherBot, bot.position.x, bot.position.y, otherBot.position.x, otherBot.position.y)) {
               //console.log(`${bot.name} id:${bot.id} collided with ${otherBot.name} id:${otherBot.id}`);
               bot.states.colliding = true;
               bot.states.collider = otherBot;
@@ -30070,6 +30092,8 @@ var _class_collosionTreeDetection = require("./abilities/class_collosionTreeDete
 
 var _class_grow = require("./abilities/class_grow");
 
+var _constants = require("../settings/constants.js");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -30077,26 +30101,44 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Swarm = /*#__PURE__*/function () {
-  function Swarm(numBots, endConditions) {
+  function Swarm(numBots, selectedAbilities, endConditions) {
     _classCallCheck(this, Swarm);
 
     this.numBots = numBots;
     var color = new _class_color_generator.color_generator();
-    this.abilities = [new _class_move.move(), new _class_wall_detector.WallDetector(), new _class_colorChanger.ColorChanger(), new _class_collosionTreeDetection.CollisionTreeDetection()]; //array type bots
+    this.abilities = this.getSelectedAbilities(selectedAbilities);
+    var diameter = 10; //array type bots
 
     this.bots = [];
+    this.pickedColors = [];
 
     for (var i = 0; i < numBots; i++) {
       // WILD color ist aktiviert
-      var newDave = new _class_dave.Dave(this.randPos(1, 720), this.randPos(1, 400), color.getWildColor(), i, this.abilities[0].getRandomDirection());
+      var currentColor = {
+        name: color.getWildColor(),
+        number: 1
+      };
+      var newDave = new _class_dave.Dave(this.randPos(diameter, _constants.canvas_width - diameter), this.randPos(diameter, _constants.canvas_height - diameter), currentColor.name, i, this.abilities[0].getRandomDirection(), diameter);
       this.bots.push(newDave);
+      var ind = this.pickedColors.indexOf(currentColor.name);
+
+      if (ind === -1) {
+        this.pickedColors.push(currentColor);
+        console.log("not found");
+        ind = this.pickedColors.length - 1;
+      } else {
+        this.pickedColors[ind].name++;
+      }
+
+      console.log("index:" + ind);
+      console.log("expected: " + currentColor.name);
+      console.log("color: " + this.pickedColors[ind].name);
     }
 
     this.taskCompleted = false;
     this.speed = 2; //irgendein array aber noch nicht sicher was da drin sein soll
-    //evtl eine neue klasse?
-    //muss irgendwie überprüfbar sein
-
+    console.log(this.pickedColors);
+   
     this.endConditions = endConditions;
     console.log("Swarm Construction Completed");
   }
@@ -30150,6 +30192,16 @@ var Swarm = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "getSelectedAbilities",
+    value: function getSelectedAbilities(selectedAbilities) {
+      var abilities = [];
+      if (selectedAbilities.includes(1)) abilities.push(new _class_move.move());
+      if (selectedAbilities.includes(2)) abilities.push(new _class_wall_detector.WallDetector());
+      if (selectedAbilities.includes(3)) abilities.push(new _class_collosionTreeDetection.CollisionTreeDetection());
+      if (selectedAbilities.includes(4)) abilities.push(new _class_colorChanger.ColorChanger());
+      return abilities;
+    }
+  }, {
     key: "setBotStates",
     value: function setBotStates(sk) {
       for (var ability = 0; ability < this.abilities.length; ability++) {
@@ -30177,7 +30229,7 @@ var Swarm = /*#__PURE__*/function () {
 }();
 
 exports.Swarm = Swarm;
-},{"./abilities/class_move":"classes/abilities/class_move.js","./class_dave":"classes/class_dave.js","./abilities/class_color_generator":"classes/abilities/class_color_generator.js","./abilities/class_wall_detector":"classes/abilities/class_wall_detector.js","./abilities/class_colorChanger":"classes/abilities/class_colorChanger.js","./abilities/class_collosionTreeDetection":"classes/abilities/class_collosionTreeDetection.js","./abilities/class_grow":"classes/abilities/class_grow.js"}],"UI/ui-generator.js":[function(require,module,exports) {
+},{"./abilities/class_move":"classes/abilities/class_move.js","./class_dave":"classes/class_dave.js","./abilities/class_color_generator":"classes/abilities/class_color_generator.js","./abilities/class_wall_detector":"classes/abilities/class_wall_detector.js","./abilities/class_colorChanger":"classes/abilities/class_colorChanger.js","./abilities/class_collosionTreeDetection":"classes/abilities/class_collosionTreeDetection.js","./abilities/class_grow":"classes/abilities/class_grow.js","../settings/constants.js":"settings/constants.js"}],"UI/ui-generator.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30190,13 +30242,15 @@ exports.addToogleBtn = addToogleBtn;
 exports.renderSubmitSection = renderSubmitSection;
 exports.renderAbilitySection = renderAbilitySection;
 exports.createSetupArray = createSetupArray;
-exports.FORM = exports.swarm = exports.UI = exports.setupData = void 0;
+exports.FORM = exports.swarm = exports.UI = exports.abilityOptions = exports.setupData = void 0;
 
 var _class_swarm = require("../classes/class_swarm");
 
 // A $( document ).ready() block.
 var setupData = ["alog1", "algo2", "ALGO3"];
 exports.setupData = setupData;
+var abilityOptions = ["Move", "Wall Collision", "Collision Detection", "Color Changer"];
+exports.abilityOptions = abilityOptions;
 var UI = $("#UI-container");
 exports.UI = UI;
 var swarm;
@@ -30213,7 +30267,7 @@ function renderMenue(FORM, ToogleID, data) {
     FORM.empty();
     addInputElem(FORM, "daveCount", "Dave Count:", "text", "insert amount of robots");
     addInputElem(FORM, "SE1", "Something else", "text", "insert something else");
-    renderAbilitySection();
+    renderAbilitySection(FORM, abilityOptions);
   } else {
     FORM.empty();
     addSelectElem(FORM, data, "Startbedingungen");
@@ -30256,6 +30310,7 @@ function addToogleBtn(target, name, type, id, labelText, checked) {
 }
 
 function initSim(simSetup) {
+  console.log(simSetup);
   var botCount = simSetup[0]["value"];
   console.log("botcount: " + botCount);
   exports.swarm = swarm = new _class_swarm.Swarm(parseInt(botCount), "none"); //enabling speed slider
@@ -30268,6 +30323,13 @@ function initSim(simSetup) {
     var speedDescription = document.getElementById("currentSpeed");
     speedDescription.innerHTML = newSpeed + " xSpeed";
   });
+  var abilities = [];
+
+  for (var i = 2; i < simSetup.length; i++) {
+    abilities.push(parseInt(simSetup[i]["value"]));
+  }
+
+  exports.swarm = swarm = new _class_swarm.Swarm(parseInt(botCount), abilities, "none");
   console.log(swarm);
 }
 
@@ -30287,7 +30349,34 @@ function renderSubmitSection(target, text, btnType) {
   target.append(c);
 }
 
-function renderAbilitySection() {}
+function renderAbilitySection(target, optionList) {
+  var div = $('<div class="m-3 dropdown">');
+  var b = $("<button />").attr("type", "button").attr("class", "btn btn-secondary dropdown-toggle").attr("id", "abilitiesMenuButton").attr("data-toggle", "dropdown").attr("aria-haspopup", "true").attr("aria-expanded", "false").text("Select Abilities");
+  var list = $("<ul />");
+  list.attr("class", "dropdown-menu keep-open");
+  var index = 1;
+  optionList.forEach(function (option) {
+    var li = $("<li />");
+    var la = $("<label />");
+    var i = $("<input/>");
+    i.attr("type", "checkbox");
+    i.attr("name", option);
+    i.attr("value", index);
+    la.text(" " + option);
+    la.attr("class", "dropdown-item");
+    la.append(i), li.append(la), list.append(li);
+    index++;
+  });
+  div.append(b);
+  div.append(list);
+  target.append(div);
+  $('.dropdown-toggle').on('click', function () {
+    $(this).next().toggle();
+  });
+  $('.dropdown-menu.keep-open').on('click', function (e) {
+    e.stopPropagation();
+  });
+}
 
 function createSetupArray() {}
 },{"../classes/class_swarm":"classes/class_swarm.js"}],"main.js":[function(require,module,exports) {
@@ -30299,13 +30388,15 @@ var _uiGenerator = require("./UI/ui-generator");
 
 require("p5");
 
+var _constants = require("./settings/constants.js");
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 $(document).ready(function () {
-  var canvas_width = 720;
-  var canvas_height = 400;
+  //const canvas_width = 720;
+  //const canvas_height = 400;
   var ToogleID = "toogle-sb";
   console.log("Hy from the Ui-generator");
   console.log(_uiGenerator.FORM);
@@ -30322,7 +30413,7 @@ $(document).ready(function () {
   var s = function s(sk) {
     sk.setup = function () {
       console.log("setup function");
-      var cnv = sk.createCanvas(canvas_width, canvas_height);
+      var cnv = sk.createCanvas(_constants.canvas_width, _constants.canvas_height);
       cnv.parent("Canvas-container");
       sk.background("#F9F9F9"); // Set line drawing color to white
 
@@ -30376,7 +30467,7 @@ $(document).ready(function () {
 
   var P5 = new p5(s);
 }); //onload end
-},{"./classes/class_swarm":"classes/class_swarm.js","./UI/ui-generator":"UI/ui-generator.js","p5":"node_modules/p5/lib/p5.min.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./classes/class_swarm":"classes/class_swarm.js","./UI/ui-generator":"UI/ui-generator.js","p5":"node_modules/p5/lib/p5.min.js","./settings/constants.js":"settings/constants.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -30404,7 +30495,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58306" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61493" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
