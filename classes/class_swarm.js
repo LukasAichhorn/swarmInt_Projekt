@@ -36,18 +36,18 @@ export class Swarm {
 
     PosSpawnX(from, to, nr, numBots){    
         let numPerRow = Math.ceil(Math.sqrt(numBots));
-        let interval = Math.floor(to / numPerRow);
+        let interval = Math.floor(to / (numPerRow + 1));
         let pos = Math.floor(nr / numPerRow);        
-        let val = from + pos * interval;
+        let val = (pos * interval) + interval;
         return val;
     }
 
 
     PosSpawnY(from, to, nr, numBots){    
         let numPerRow = Math.ceil(Math.sqrt(numBots));
-        let interval = Math.floor(to / numPerRow);
+        let interval = Math.floor(to / (numPerRow + 1));
         let pos = nr % numPerRow;        
-        let val = from + pos *interval;
+        let val =  (pos * interval) + interval;
         return val;
     }
 
