@@ -12,6 +12,8 @@ export class Dave {
         this.speed = 2;
         this.size = diameter;
         this.states ={
+            UHcount:0,
+            LHcount:0,
             wall:false,
             colliding: false,
             collider: null
