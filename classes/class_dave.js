@@ -51,12 +51,24 @@ export class Dave {
     draw(sk){ 
          
          //set draw color to bots current color;
-        sk.fill(this.colors);     
+        sk.fill(this.colors); 
+        if(this.states.LHcount+this.states.UHcount > 0){
+            sk.fill(58,0,247);
+            this.color = "#3A00F7";
+        }
+        if(this.states.LHcount+this.states.UHcount > 2){
+            sk.fill(245,58,114);
+            this.color = "#F53A72";
+        } 
+        if(this.states.LHcount+this.states.UHcount > 4){
+            sk.fill(246,5,5);
+            this.color = "#F60505";
+        }       
         sk.circle(this.position.x, this.position.y, this.size);
         
         let s = this.name;
         sk.textSize(10);
-        sk.text(s,this.position.x - this.size ,this.position.y - this.size);
+        //sk.text(s,this.position.x - this.size ,this.position.y - this.size);
         
         
 

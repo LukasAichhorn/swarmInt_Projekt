@@ -1,10 +1,12 @@
 import p5 from "p5";
 
 export class pps{
-    speed= 5.67;
-    spin = 180;
-    radius = 50.0; 
-    beta = 5;
+    // 3, 180, 16, 6
+
+    speed= 2;
+    spin = 160;
+    radius = 10.0; 
+    beta = 3;
     
     constructor(){};
     
@@ -61,9 +63,13 @@ export class pps{
         //change x,y positions
         bot.position.x = bot.position.x + bot.direction.x*this.speed;
         bot.position.y = bot.position.y + bot.direction.y*this.speed;
-        sk.line(bot.position.x-10,bot.position.y,bot.position.x+10,bot.position.y);
-        sk.noFill();
-        sk.circle(bot.position.x, bot.position.y, this.radius);
+        //sk.line(bot.position.x-10,bot.position.y,bot.position.x+10,bot.position.y);
+        //sk.noFill();
+        //sk.circle(bot.position.x, bot.position.y, this.radius);
+        
+        sk.circle(bot.position.x,bot.position.y,bot.radius);
+        
+
     }
 
 }

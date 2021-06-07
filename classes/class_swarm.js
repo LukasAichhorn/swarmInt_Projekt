@@ -17,7 +17,7 @@ export class Swarm {
         let color = new color_generator; 
         this.abilities = this.getSelectedAbilities(selectedAbilities);
         //this.abilities.push(new move());
-        let diameter = 10;
+        let diameter = 5;
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      
@@ -112,7 +112,11 @@ export class Swarm {
         }
     }
 
-        let abilities = [];    
+        let abilities = []; 
+        if(search("move", selectedAbilities)){
+            console.log("i add move module"),  
+            abilities.push(new move());
+        }      
         if(search("PPS", selectedAbilities)){
             console.log("i add PPS module"),  
             abilities.push(new pps());
