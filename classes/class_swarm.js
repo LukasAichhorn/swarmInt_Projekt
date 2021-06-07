@@ -7,6 +7,7 @@ import { ColorChanger } from "./abilities/class_colorChanger";
 import { CollisionTreeDetection } from "./abilities/class_collosionTreeDetection";
 import { Grow } from "./abilities/class_grow";
 import {canvas_width, canvas_height} from "../settings/constants.js";
+import { pps } from "./abilities/class_pps";
 
 
 export class Swarm {    
@@ -15,14 +16,14 @@ export class Swarm {
         this.numBots = numBots;
         let color = new color_generator; 
         this.abilities = this.getSelectedAbilities(selectedAbilities);
-        this.abilities.push(new move());
-        let diameter = 10;
+        //this.abilities.push(new move());
+        let diameter = 5;
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      
             // WILD color ist aktiviert
             var currentColor = {name: color.getWildColor(), number: 1};
-            let newDave = new Dave(this.PosSpawnY(diameter, canvas_width, i, numBots),this.PosSpawnX(diameter, canvas_height, i, numBots),currentColor.name,i ,this.abilities[this.abilities.length-1].getRandomDirection(), diameter);
+            let newDave = new Dave(this.PosSpawnY(diameter, canvas_width, i, numBots),this.PosSpawnX(diameter, canvas_height, i, numBots),currentColor.name,i ,p5.Vector.random2D(), diameter);
             this.bots.push(newDave);
         }
         this.taskCompleted = false;
@@ -111,7 +112,15 @@ export class Swarm {
         }
     }
 
-        let abilities = [];        
+        let abilities = []; 
+        if(search("move", selectedAbilities)){
+            console.log("i add move module"),  
+            abilities.push(new move());
+        }      
+        if(search("PPS", selectedAbilities)){
+            console.log("i add PPS module"),  
+            abilities.push(new pps());
+        }    
                 
         if(search("Wall Collision", selectedAbilities)){
             console.log("i add wall collision"),  

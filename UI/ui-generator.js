@@ -3,11 +3,7 @@ import { Swarm } from "../classes/class_swarm";
 
 // A $( document ).ready() block.
 export const setupData = ["alog1", "algo2", "ALGO3"];
-export const abilityOptions = [
-  "Wall Collision",
-  "Collision Detection",
-  "Color Changer",
-];
+export const abilityOptions = ["move","PPS","Wall Collision","Collision Detection", "Color Changer", ];
 export const UI = $("#UI-container");
 export var swarm;
 let form = $("<form></form>")
