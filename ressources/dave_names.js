@@ -78,5 +78,10 @@ export var namesList = [
     "Malcolm",
     "Sugar Pie",
     "Nadine",
-    "Ridi"
+    "Ridi",
+    "Hulio",
+    "Udo",
+    "Jürgen",
+    "Helene Fischer"
+
 ];

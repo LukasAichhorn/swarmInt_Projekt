@@ -1,5 +1,5 @@
 import { Swarm } from "./classes/class_swarm";
-import { addToogleBtn, renderMenue, renderSubmitSection,setupData,UI,FORM,swarm } from "./UI/ui-generator";
+import { addToogleBtn, renderMenue, renderSubmitSection,setupData,UI,FORM,swarm,frameRate } from "./UI/ui-generator";
 import  'p5';
 import {canvas_width, canvas_height} from "./settings/constants.js";
 
@@ -26,7 +26,7 @@ $(document).ready(function () {
   renderMenue(FORM,ToogleID,setupData);
   
   renderSubmitSection(UI,"Start Simulation","success");
-
+  let fr = 10;
 
 let s = (sk) => {    
     sk.setup = () =>{
@@ -38,7 +38,8 @@ let s = (sk) => {
       sk.line(2, 2, 720, 2);
       sk.line(720, 2, 720, 400);
       sk.line(2, 400, 720, 400);
-      sk.frameRate(30);
+      sk.frameRate(fr);
+      
     }
 
     sk.draw =  async () =>{
@@ -56,6 +57,10 @@ let s = (sk) => {
           await swarm.excecuteAbilities(sk);
          swarm.draw(sk);
          swarm.updateStatus();
+         let speedslider = document.getElementById("speedRange");
+         fr =  parseFloat(speedslider.value);
+         sk.frameRate(fr);
+         //console.log(sk.frameRate());
          
          if (swarm.tasksCompleted){
            alert("Monochrome");
