@@ -17,6 +17,8 @@ let form = $("<form></form>")
 export const FORM = form;
 var SimSetup = [];
 
+//export let frameRate;
+
 export function renderMenue(FORM, ToogleID, data) {
   console.log(data);
   if (ToogleID == "toogle-sb") {
@@ -104,15 +106,17 @@ function initSim(simSetup) {
   swarm = new Swarm(parseInt(botCount), "none");
 
   //enabling speed slider
+  /*function before changing to framerate
+  
   let speedSlider = document.getElementById("speedRange");
   speedSlider.addEventListener("input", function () {
     let newSpeed = parseFloat(speedSlider.value);
 
-    swarm.setSpeed(newSpeed);
-    console.log(swarm);
+    //frameRate = newSpeed;
+    //console.log(frameRate);
     let speedDescription = document.getElementById("currentSpeed");
     speedDescription.innerHTML = newSpeed + " xSpeed";
-  });
+  });*/
   let abilities = [];
 
   let endConditions = ["swarmIsMonochrome"];
