@@ -101,37 +101,38 @@ export class Swarm {
         }
     }
 
-    getSelectedAbilities(selectedAbilities) {
-    console.log("inside get select");
-
-    function search(nameKey, myArray){
+    search(nameKey, myArray){
         for (var i=0; i < myArray.length; i++) {
             if (myArray[i].name === nameKey) {
                 return myArray[i];
             }
         }
     }
+    getSelectedAbilities(selectedAbilities) {
+    console.log("inside get select");
+
+   
 
         let abilities = []; 
-        if(search("move", selectedAbilities)){
+        if(this.search("move", selectedAbilities)){
             console.log("i add move module"),  
             abilities.push(new move());
         }      
-        if(search("PPS", selectedAbilities)){
+        if(this.search("PPS", selectedAbilities)){
             console.log("i add PPS module"),  
             abilities.push(new pps());
         }    
                 
-        if(search("Wall Collision", selectedAbilities)){
+        if(this.search("Wall Collision", selectedAbilities)){
             console.log("i add wall collision"),  
             abilities.push(new WallDetector());
         }
             
 
-        if(search("Collision Detection", selectedAbilities))
+        if(this.search("Collision Detection", selectedAbilities))
             abilities.push(new CollisionTreeDetection());
         
-        if(search("Color Changer", selectedAbilities))
+        if(this.search("Color Changer", selectedAbilities))
             abilities.push(new ColorChanger());
 
         return abilities;

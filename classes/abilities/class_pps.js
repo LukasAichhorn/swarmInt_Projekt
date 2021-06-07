@@ -5,7 +5,7 @@ export class pps{
 
     speed= 2;
     spin = 160;
-    radius = 10.0; 
+    radius = 40.0; 
     beta = 3;
     
     constructor(){};

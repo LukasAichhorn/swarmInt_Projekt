@@ -119,9 +119,13 @@ function initSim(simSetup) {
   swarm = new Swarm(parseInt(botCount), simSetup, endConditions);
 
   //BUILD LOG OF SWARM
-  buildLog(swarm);
+  if(!swarm.search("PPS",swarm.abilities)){
+    console.log("testing......");
+    buildLog(swarm);
+  }
+  
 
-  console.log(swarm);
+  //console.log(swarm);
 }
 
 export function renderSubmitSection(target, text, btnType) {
@@ -132,6 +136,8 @@ export function renderSubmitSection(target, text, btnType) {
     .text(text);
   b.on("click", function () {
     let simSetup = $("#UI-Form").serializeArray();
+    
+    
     console.log(simSetup);
     initSim(simSetup);
     let speedSlider = document.getElementById("speedRange");
@@ -193,6 +199,7 @@ function buildLog(swarm) {
   //alle 2 sekunden updaten
   updateLog();
   let logUpdater = setInterval(updateLog, 2000);
+   
 
   function updateLog() {
     $(".table-cell").remove();
