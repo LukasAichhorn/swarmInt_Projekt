@@ -12,12 +12,12 @@ import { pps } from "./abilities/class_pps";
 
 export class Swarm {    
 
-    constructor(numBots, selectedAbilities, endConditions) {
+    constructor(numBots, selectedAbilities) {
         this.numBots = numBots;
         let color = new color_generator; 
         this.abilities = this.getSelectedAbilities(selectedAbilities);
         //this.abilities.push(new move());
-        let diameter = 5;
+        let diameter = 10;
         //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      
@@ -26,12 +26,7 @@ export class Swarm {
             let newDave = new Dave(this.PosSpawnY(diameter, canvas_width, i, numBots),this.PosSpawnX(diameter, canvas_height, i, numBots),currentColor.name,i ,p5.Vector.random2D(), diameter);
             this.bots.push(newDave);
         }
-        this.taskCompleted = false;
-        this.speed = 2;
-        //irgendein array aber noch nicht sicher was da drin sein soll
-        //evtl eine neue klasse?
-        //muss irgendwie überprüfbar sein
-        this.endConditions = endConditions;
+        this.speed = 2;        
         console.log("Swarm Construction Completed");
     }
 
@@ -59,16 +54,10 @@ export class Swarm {
 
     // This function draws each bot while simultaniously tracking the colors present in the swarm
     draw(sk){
-        let colorsInSwarm = new Set();
         this.bots.forEach((bot)=>{
             bot.speed = this.speed;
             bot.draw(sk);
-            colorsInSwarm.add(bot.colors);
         });
-        if ((colorsInSwarm.size === 1) && (this.endConditions.includes("swarmIsMonochrome"))){
-            this.endConditions[this.endConditions.indexOf("swarmIsMonochrome")] = "completed";
-            console.log("Swarm is monochrome");
-        }
     }
 
     addBot(bot) {
@@ -78,28 +67,7 @@ export class Swarm {
 
     setSpeed(speed){
         this.speed = speed;
-    }
-
-
-    //early idea on how a swarm can know if all tasks are completed
-    //obv not finished!
-    checkTaskCompletion() {
-        for (let i = 0; i < this.endConditions.length; i++){
-            if (this.endConditions[i] !== "completed")
-                return false;
-        }
-        return true;
-    }
-    
-    updateStatus() {
-        if(this.checkTaskCompletion()) {
-            console.log("tasks completed");
-            this.tasksCompleted = true;
-        }
-        else{
-            this.tasksCompleted = false;
-        }
-    }
+    }s
 
     search(nameKey, myArray){
         for (var i=0; i < myArray.length; i++) {
