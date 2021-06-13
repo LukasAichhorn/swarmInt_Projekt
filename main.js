@@ -1,12 +1,8 @@
-import { Swarm } from "./classes/class_swarm";
-import { addToogleBtn, renderMenue, renderSubmitSection,setupData,UI,FORM,swarm,frameRate } from "./UI/ui-generator";
+import { addToogleBtn, renderMenue, renderSubmitSection,setupData,UI,FORM,swarm,frameRate, endConditions } from "./UI/ui-generator";
 import  'p5';
 import {canvas_width, canvas_height} from "./settings/constants.js";
 
-
 $(document).ready(function () {
-//const canvas_width = 720;
-//const canvas_height = 400;
 
     let ToogleID = "toogle-sb";
 
@@ -26,7 +22,7 @@ $(document).ready(function () {
   renderMenue(FORM,ToogleID,setupData);
   
   renderSubmitSection(UI,"Start Simulation","success");
-  let fr = 10;
+  let fr = 24; //minimum for smooth animation
 
 let s = (sk) => {    
     sk.setup = () =>{
@@ -56,17 +52,13 @@ let s = (sk) => {
           await swarm.setBotStates(sk);
           await swarm.excecuteAbilities(sk);
          swarm.draw(sk);
-         swarm.updateStatus();
          let speedslider = document.getElementById("speedRange");
          fr =  parseFloat(speedslider.value);
          sk.frameRate(fr);
          //console.log(sk.frameRate());
          
-         if (swarm.tasksCompleted){
-           alert("Monochrome");
-           sk.noLoop();        
-         }
-            
+          if(endConditions.checkFinalConditions())
+            sk.noLoop();            
             
          }  
     }

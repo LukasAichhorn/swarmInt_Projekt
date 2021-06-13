@@ -1,4 +1,4 @@
-import { Color } from "p5";
+import { finalConditions } from "../classes/class_finalConditions";
 import { Swarm } from "../classes/class_swarm";
 
 // A $( document ).ready() block.
@@ -6,12 +6,12 @@ export const setupData = ["alog1", "algo2", "ALGO3"];
 export const abilityOptions = ["move","PPS","Wall Collision","Collision Detection", "Color Changer", ];
 export const UI = $("#UI-container");
 export var swarm;
+export var endConditions;
 let form = $("<form></form>")
   .attr("id", "UI-Form")
   .attr("class", "bg-light border rounded");
 
 export const FORM = form;
-var SimSetup = [];
 
 //export let frameRate;
 
@@ -113,10 +113,10 @@ function initSim(simSetup) {
     let speedDescription = document.getElementById("currentSpeed");
     speedDescription.innerHTML = newSpeed + " xSpeed";
   });*/
-  let abilities = [];
-
-  let endConditions = ["swarmIsMonochrome"];
-  swarm = new Swarm(parseInt(botCount), simSetup, endConditions);
+  //let abilities = [];
+  endConditions = new finalConditions();
+  endConditions.add("swarmIsMonochrome");
+  swarm = new Swarm(parseInt(botCount), simSetup);
 
   //BUILD LOG OF SWARM
   if(!swarm.search("PPS",swarm.abilities)){
