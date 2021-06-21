@@ -135,9 +135,7 @@ export function renderSubmitSection(target, text, btnType) {
     .attr("class", "btn btn-" + btnType)
     .text(text);
   b.on("click", function () {
-    let simSetup = $("#UI-Form").serializeArray();
-    
-    
+    let simSetup = $("#UI-Form").serializeArray();  
     console.log(simSetup);
     initSim(simSetup);
     let speedSlider = document.getElementById("speedRange");
@@ -188,6 +186,12 @@ export function renderAbilitySection(target, optionList) {
   $(".dropdown-menu.keep-open").on("click", function (e) {
     e.stopPropagation();
   });
+
+  window.onclick = function(event) {
+    if (!event.target.matches(".dropdown-toggle")){
+      $(".dropdown-toggle").next().toggle();
+    }
+  };
 }
 export function createSetupArray() {}
 
