@@ -30,6 +30,7 @@ export function renderMenue(FORM, ToogleID, data) {
     renderAbilitySection(FORM, abilityOptions);
   } else {
     FORM.empty();
+
     addSelectElem(FORM, data, "Startbedingungen");
   }
 }
@@ -185,12 +186,6 @@ export function renderAbilitySection(target, optionList) {
   $(".dropdown-menu.keep-open").on("click", function (e) {
     e.stopPropagation();
   });
-
-  window.onclick = function(event) {
-    if (!event.target.matches(".dropdown-toggle")){
-      $(".dropdown-toggle").next().toggle();
-    }
-  };
 }
 export function createSetupArray() {}
 
