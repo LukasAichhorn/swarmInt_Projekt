@@ -134,9 +134,7 @@ export function renderSubmitSection(target, text, btnType) {
     .attr("class", "btn btn-" + btnType)
     .text(text);
   b.on("click", function () {
-    let simSetup = $("#UI-Form").serializeArray();
-    
-    
+    let simSetup = $("#UI-Form").serializeArray();  
     console.log(simSetup);
     initSim(simSetup);
     let speedSlider = document.getElementById("speedRange");
