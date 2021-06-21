@@ -186,6 +186,12 @@ export function renderAbilitySection(target, optionList) {
   $(".dropdown-menu.keep-open").on("click", function (e) {
     e.stopPropagation();
   });
+
+  window.onclick = function(event) {
+    if (!event.target.matches(".dropdown-toggle")){
+      $(".dropdown-toggle").next().toggle();
+    }
+  };
 }
 export function createSetupArray() {}
 
