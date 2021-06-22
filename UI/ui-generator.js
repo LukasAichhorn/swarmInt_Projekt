@@ -10,7 +10,7 @@ export var endConditions;
 let interval;
 let form = $("<form></form>")
   .attr("id", "UI-Form")
-  .attr("class", "bg-light border rounded");
+  .attr("class", "bg-light border rounded shadow-sm");
 
 export const FORM = form;
 
@@ -131,7 +131,7 @@ export function addSelectElem(target, optValues, id) {
 export function addToogleBtn(target, name, type, id, labelText, checked) {
   let b1 = $("<input />")
     .attr("type", "radio")
-    .attr("class", "btn-check ")
+    .attr("class", "btn-check")
     .attr("name", name)
     .attr("id", id)
     .attr("autocomplete", "off");
@@ -147,7 +147,7 @@ export function addToogleBtn(target, name, type, id, labelText, checked) {
   });
 
   let label = $("<label />")
-    .attr("class", " m-1 btn btn-outline-" + type)
+    .attr("class", " btn mb-2 w-100 btn-outline-" + type)
     .attr("for", id)
     .text(labelText);
 
@@ -175,10 +175,10 @@ function initSim(simSetup) {
 }
 
 export function renderSubmitSection(target, text, btnType) {
-  let c = $("<div />").attr("class", " mt-1 p-1 bg-light border rounded");
+  let c = $("<div />").attr("class", "   mt-1 p-1");
   let b = $("<button />")
     .attr("type", "button")
-    .attr("class", "btn btn-" + btnType)
+    .attr("class", "btn shadow-sm w-100 btn-" + btnType)
     .text(text);
   b.on("click", function () {
     let simSetup = $("#UI-Form").serializeArray();  

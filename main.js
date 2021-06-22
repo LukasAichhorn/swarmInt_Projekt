@@ -13,10 +13,11 @@ $(document).ready(function () {
   
  document.getElementById("speedRange").disabled = true;
  document.getElementById("currentSpeed").hidden = true;
-        
+ let togglesection1 = $(".toggleSection1");
+ let togglesection2 = $(".toggleSection2");       
 
-  addToogleBtn(UI, "sandbox", "primary", "toogle-sb", "Sandbox Mode", false);
-  addToogleBtn(UI, "predefinded", "primary", "toogle-pd", "Algorithm`s",false);
+  addToogleBtn(togglesection1, "sandbox", "primary", "toogle-sb", "Sandbox Mode", false);
+  addToogleBtn(togglesection2, "predefinded", "primary", "toogle-pd", "Algorithm`s",false);
 
   UI.append(FORM);
   renderMenue(FORM,ToogleID,setupData);
