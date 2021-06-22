@@ -3,12 +3,13 @@ import p5 from "p5";
 export class pps{
     // 3, 180, 16, 6
 
-    speed= 2;
-    spin = 160;
-    radius = 40.0; 
-    beta = 3;
     
-    constructor(){};
+    constructor(speed,spin,radius,beta){
+        this.speed = speed;
+        this.spin = spin;
+        this.radius = radius;
+        this.beta = beta;
+    };
     
 
 
@@ -64,8 +65,8 @@ export class pps{
         bot.position.x = bot.position.x + bot.direction.x*this.speed;
         bot.position.y = bot.position.y + bot.direction.y*this.speed;
         //sk.line(bot.position.x-10,bot.position.y,bot.position.x+10,bot.position.y);
-        //sk.noFill();
-        //sk.circle(bot.position.x, bot.position.y, this.radius);
+        sk.noFill();
+        sk.circle(bot.position.x, bot.position.y, this.radius);
         
         sk.circle(bot.position.x,bot.position.y,bot.radius);
         

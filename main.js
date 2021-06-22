@@ -16,7 +16,7 @@ $(document).ready(function () {
         
 
   addToogleBtn(UI, "sandbox", "primary", "toogle-sb", "Sandbox Mode", false);
-  addToogleBtn(UI, "predefinded", "primary", "toogle-pd", "predefined values",false);
+  addToogleBtn(UI, "predefinded", "primary", "toogle-pd", "Algorithm`s",false);
 
   UI.append(FORM);
   renderMenue(FORM,ToogleID,setupData);

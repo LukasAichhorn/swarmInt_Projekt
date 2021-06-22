@@ -2,11 +2,12 @@ import { finalConditions } from "../classes/class_finalConditions";
 import { Swarm } from "../classes/class_swarm";
 
 // A $( document ).ready() block.
-export const setupData = ["alog1", "algo2", "ALGO3"];
-export const abilityOptions = ["move","PPS","Wall Collision","Collision Detection", "Color Changer", ];
+export const setupData = ["PPS","other"];
+export const abilityOptions = ["move","Wall Collision","Collision Detection", "Color Changer", ];
 export const UI = $("#UI-container");
 export var swarm;
 export var endConditions;
+let interval;
 let form = $("<form></form>")
   .attr("id", "UI-Form")
   .attr("class", "bg-light border rounded");
@@ -30,10 +31,69 @@ export function renderMenue(FORM, ToogleID, data) {
     renderAbilitySection(FORM, abilityOptions);
   } else {
     FORM.empty();
+//Predefined values :: 
 
     addSelectElem(FORM, data, "Startbedingungen");
+    let CONT = $("<div></div>")
+    .attr("id", "container");
+    $("#Startbedingungen").after(CONT);
+    $("#Startbedingungen").val(" ");
+    $("#Startbedingungen").change(()=>{
+      
+      CONT.empty();
+      if($("#Startbedingungen").val() =="PPS"){
+        addInputElem(
+          CONT,
+          "daveCount",
+          "Dave Count:",
+          "text",
+          "insert amount of robots"
+        );
+
+        addInputElem(
+          CONT,
+          "Speed",
+          "Speed",
+          "text",
+          "_"
+        );
+        addInputElem(
+          CONT,
+          "Spin",
+          "Spin",
+          "text",
+          "_"
+        );
+        addInputElem(
+          CONT,
+          "Radius",
+          "Radis",
+          "text",
+          "_"
+        );
+        addInputElem(
+          CONT,
+          "beta",
+          "Beta",
+          "text",
+          "_"
+        );
+      }
+      else if(($("#Startbedingungen").val() =="other")){
+        addInputElem(
+          CONT,
+          "Other",
+          "Other",
+          "text",
+          "insert other option"
+        );
+      }
+    })
+      
+    }
+   
   }
-}
+
 
 export function addInputElem(target, fieldName, labelText, type, placeholder) {
   let s =
@@ -58,7 +118,7 @@ export function addInputElem(target, fieldName, labelText, type, placeholder) {
 }
 export function addSelectElem(target, optValues, id) {
   let c = $("<div />").attr("class", "m-3");
-  let root = $("<select></select>").attr("class", "form-select").attr("id", id);
+  let root = $("<select></select>").attr("class", "form-select").attr("id", id).attr("name","select");
 
   optValues.forEach((optText) => {
     let option = $("<option></option").attr("value", optText).text(optText);
@@ -97,35 +157,21 @@ export function addToogleBtn(target, name, type, id, labelText, checked) {
 
 function initSim(simSetup) {
   console.log(simSetup);
-  let botCount = simSetup[0]["value"];
+
+  let botCount = simSetup.find(value => value.name =="daveCount").value;
   console.log("botcount: " + botCount);
   swarm = new Swarm(parseInt(botCount), "none");
 
-  //enabling speed slider
-  /*function before changing to framerate
-  
-  let speedSlider = document.getElementById("speedRange");
-  speedSlider.addEventListener("input", function () {
-    let newSpeed = parseFloat(speedSlider.value);
-
-    //frameRate = newSpeed;
-    //console.log(frameRate);
-    let speedDescription = document.getElementById("currentSpeed");
-    speedDescription.innerHTML = newSpeed + " xSpeed";
-  });*/
-  //let abilities = [];
   endConditions = new finalConditions();
   endConditions.add("swarmIsMonochrome");
   swarm = new Swarm(parseInt(botCount), simSetup);
 
   //BUILD LOG OF SWARM
-  if(!swarm.search("PPS",swarm.abilities)){
-    console.log("testing......");
+  if(!simSetup.find(value => value.name =="select")){
+    console.log("no selected alog => build log");
     buildLog(swarm);
   }
-  
 
-  //console.log(swarm);
 }
 
 export function renderSubmitSection(target, text, btnType) {
@@ -197,16 +243,25 @@ export function createSetupArray() {}
 
 //LOG
 function buildLog(swarm) {
+  console.log("we build log");
+  
+  $("#logs-container").empty();
   $("#logs-container").append("<div class = 'col' id ='log-table-box'><div>");
   $("#log-table-box").append("<table class='table' id ='log-table'></table>");
  
-  //alle 2 sekunden updaten
+  //reset log if already set:
+  if(interval){
+    console.log("interval is set thus we reset");
+    clearInterval(interval);
+    interval = null;
+  }
   updateLog();
-  let logUpdater = setInterval(updateLog, 2000);
-   
+  //alle 2 sekunden updaten
+  interval = setInterval(updateLog, 2000);
+  
 
   function updateLog() {
-    $(".table-cell").remove();
+    $("#log-table").empty();
     $("#log-table").append( "<tr><th class = 'table-cell'>Color</th> <th class = 'table-cell'>Amount of bots</th></tr>");
 
 

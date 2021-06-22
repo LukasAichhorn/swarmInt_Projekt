@@ -61,8 +61,8 @@ export class Dave {
             this.color = "#F53A72";
         } 
         if(this.states.LHcount+this.states.UHcount > 4){
-            sk.fill(246,5,5);
-            this.color = "#F60505";
+            sk.fill(191,0,0);
+            this.color = "#bf0000";
         }       
         sk.circle(this.position.x, this.position.y, this.size);
         
