@@ -82,21 +82,34 @@ export class Swarm {
    
 
         let abilities = []; 
+
+        if(this.search("select", selectedAbilities)){
+            console.log("i found a selected Algorithm");
+            console.log(selectedAbilities);
+            let algo = selectedAbilities.find( elem => elem.name =="select");
+             if(algo.value == "PPS"){
+                abilities.push(new pps(
+                    selectedAbilities.find( elem => elem.name =="Speed").value,
+                    selectedAbilities.find( elem => elem.name =="Spin").value,
+                    selectedAbilities.find( elem => elem.name =="Radius").value,
+                    selectedAbilities.find( elem => elem.name =="beta").value
+                ));
+             }
+            
+        }  
+
         if(this.search("move", selectedAbilities)){
             console.log("i add move module"),  
             abilities.push(new move());
         }      
-        if(this.search("PPS", selectedAbilities)){
-            console.log("i add PPS module"),  
-            abilities.push(new pps());
-        }    
-                
+        // if(this.search("PPS", selectedAbilities)){
+        //     console.log("i add PPS module"),  
+        //     abilities.push(new pps());
+        // }      
         if(this.search("Wall Collision", selectedAbilities)){
             console.log("i add wall collision"),  
             abilities.push(new WallDetector());
         }
-            
-
         if(this.search("Collision Detection", selectedAbilities))
             abilities.push(new CollisionTreeDetection());
         
