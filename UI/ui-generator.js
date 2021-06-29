@@ -67,7 +67,7 @@ export function renderMenue(FORM, ToogleID, data) {
         addInputElem(
           CONT,
           "Radius",
-          "Radis",
+          "Radius",
           "text",
           "_"
         );

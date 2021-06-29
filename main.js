@@ -17,7 +17,7 @@ $(document).ready(function () {
  let togglesection2 = $(".toggleSection2");       
 
   addToogleBtn(togglesection1, "sandbox", "primary", "toogle-sb", "Sandbox Mode", false);
-  addToogleBtn(togglesection2, "predefinded", "primary", "toogle-pd", "Algorithm`s",false);
+  addToogleBtn(togglesection2, "predefinded", "primary", "toogle-pd", "Algorithms",false);
 
   UI.append(FORM);
   renderMenue(FORM,ToogleID,setupData);
