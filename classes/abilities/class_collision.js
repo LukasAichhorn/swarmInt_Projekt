@@ -3,12 +3,12 @@ export class CollisionDetector{
     constructor(){
     }
 
-    // 1.) grobe unterteilung um potentielle Kollisionen zu finden (To-Do)
+    // 1.) Rough subdivision to find potential collisions (To-Do)
 
     broadDetection(posx1, posy1) {
         potentialCollidingDaves = []
 
-        //irgendeine Methode um Liste von Daves in der Umgebung zu erstellen
+        //method to create a list of Daves in the environment
 
         potentialCollidingDaves.forEach(secondDave => {
             narrowDetection(posx1, posy1, secondDave.posx2, secondDave.posy2)
@@ -16,7 +16,7 @@ export class CollisionDetector{
 
     }
 
-    // 2.) Aufwendige + genaue Stoßunterscheidung
+    // 2.) Elaborate and precise thrust differentiation
 
     narrowDetection(posx1, posy1, posx2, posy2) {
         let circle1 = {radius: 10, x: posx1, y: posy1};
@@ -30,6 +30,5 @@ export class CollisionDetector{
         // collision detected!
         }
     }
-
     
 }

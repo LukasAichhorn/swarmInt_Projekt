@@ -14,7 +14,7 @@ export class color_generator {
 
         //RANDOM COLOR
         this.color_array = ["#d19c1f", "#8f1c0d", "#c6e82e", "#29612f", "#146096"]
-        //orange, rot, limette, dunkelgrün, blau
+        //orange, red, lime, green, blue
         this.random_color = this.color_array[Math.floor(Math.random() * 5)];
     }
 
@@ -31,7 +31,6 @@ export class color_generator {
         this.random_color = this.color_array[Math.floor(Math.random() * 5)];
     }
 
-
     getWildColor(){        
         this.shuffleColors();
         return this.wild_color;
@@ -42,7 +41,6 @@ export class color_generator {
         return this.random_color;
     }
 
-    //EINZELNE FARBEN
     getOrange(){        
         return this.color_array[0];
     }

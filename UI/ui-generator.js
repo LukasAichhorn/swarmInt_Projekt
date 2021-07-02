@@ -1,7 +1,6 @@
 import { finalConditions } from "../classes/class_finalConditions";
 import { Swarm } from "../classes/class_swarm";
 
-// A $( document ).ready() block.
 export const setupData = ["PPS","other"];
 export const abilityOptions = ["move","Wall Collision","Collision Detection", "Color Changer", ];
 export const UI = $("#UI-container");
@@ -13,8 +12,6 @@ let form = $("<form></form>")
   .attr("class", "bg-light border rounded shadow-sm");
 
 export const FORM = form;
-
-//export let frameRate;
 
 export function renderMenue(FORM, ToogleID, data) {
   console.log(data);
@@ -31,8 +28,8 @@ export function renderMenue(FORM, ToogleID, data) {
     renderAbilitySection(FORM, abilityOptions);
   } else {
     FORM.empty();
-//Predefined values :: 
 
+    //Predefined values 
     addSelectElem(FORM, data, "Startbedingungen");
     let CONT = $("<div></div>")
     .attr("id", "container");
@@ -89,10 +86,8 @@ export function renderMenue(FORM, ToogleID, data) {
         );
       }
     })
-      
-    }
-   
   }
+}
 
 
 export function addInputElem(target, fieldName, labelText, type, placeholder) {
@@ -116,6 +111,7 @@ export function addInputElem(target, fieldName, labelText, type, placeholder) {
 
   target.append(s);
 }
+
 export function addSelectElem(target, optValues, id) {
   let c = $("<div />").attr("class", "m-3");
   let root = $("<select></select>").attr("class", "form-select").attr("id", id).attr("name","select");
@@ -187,7 +183,6 @@ export function renderSubmitSection(target, text, btnType) {
     let speedSlider = document.getElementById("speedRange");
     speedSlider.disabled = false;
     document.getElementById("currentSpeed").hidden;
-    //speedDescription.hidden = false;
   });
   c.append(b);
 
@@ -233,9 +228,10 @@ export function renderAbilitySection(target, optionList) {
     e.stopPropagation();
   });
 
+  //hide dropdown menu when clicked outside of it
   window.onclick = function(event) {
     if (!event.target.matches(".dropdown-toggle")){
-      $(".dropdown-toggle").next().toggle();
+      $(".dropdown-toggle").next().hide();
     }
   };
 }
@@ -290,5 +286,3 @@ function buildLog(swarm) {
     }
   }
 }
-
-//Update Log function needs swarm

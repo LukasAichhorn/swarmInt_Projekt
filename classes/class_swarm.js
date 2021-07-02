@@ -1,14 +1,11 @@
-
 import { move } from "./abilities/class_move";
 import { Dave } from "./class_dave";
 import { color_generator } from "./abilities/class_color_generator";
 import { WallDetector } from "./abilities/class_wall_detector";
 import { ColorChanger } from "./abilities/class_colorChanger";
 import { CollisionTreeDetection } from "./abilities/class_collosionTreeDetection";
-import { Grow } from "./abilities/class_grow";
 import {canvas_width, canvas_height} from "../settings/constants.js";
 import { pps } from "./abilities/class_pps";
-
 
 export class Swarm {    
 
@@ -16,12 +13,9 @@ export class Swarm {
         this.numBots = numBots;
         let color = new color_generator; 
         this.abilities = this.getSelectedAbilities(selectedAbilities);
-        //this.abilities.push(new move());
         let diameter = 10;
-        //array type bots
         this.bots = [];
         for (let i = 0; i < numBots; i++) {                      
-            // WILD color ist aktiviert
             var currentColor = {name: color.getWildColor(), number: 1};
             let newDave = new Dave(this.PosSpawnY(diameter, canvas_width, i, numBots),this.PosSpawnX(diameter, canvas_height, i, numBots),currentColor.name,i ,p5.Vector.random2D(), diameter);
             this.bots.push(newDave);
@@ -52,7 +46,6 @@ export class Swarm {
         return val;
     }
 
-    // This function draws each bot while simultaniously tracking the colors present in the swarm
     draw(sk){
         this.bots.forEach((bot)=>{
             bot.speed = this.speed;
@@ -67,7 +60,7 @@ export class Swarm {
 
     setSpeed(speed){
         this.speed = speed;
-    }s
+    }
 
     search(nameKey, myArray){
         for (var i=0; i < myArray.length; i++) {
@@ -76,11 +69,9 @@ export class Swarm {
             }
         }
     }
+
     getSelectedAbilities(selectedAbilities) {
     console.log("inside get select");
-
-   
-
         let abilities = []; 
 
         if(this.search("select", selectedAbilities)){
@@ -101,11 +92,7 @@ export class Swarm {
         if(this.search("move", selectedAbilities)){
             console.log("i add move module"),  
             abilities.push(new move());
-        }      
-        // if(this.search("PPS", selectedAbilities)){
-        //     console.log("i add PPS module"),  
-        //     abilities.push(new pps());
-        // }      
+        }          
         if(this.search("Wall Collision", selectedAbilities)){
             console.log("i add wall collision"),  
             abilities.push(new WallDetector());
@@ -117,28 +104,17 @@ export class Swarm {
             abilities.push(new ColorChanger());
 
         return abilities;
-
-
-
     }
-
 
     setBotStates(sk){
        for (let ability = 0; ability < this.abilities.length; ability++) {
-          
            for (let bot = 0; bot < this.bots.length; bot++) {
-
-                
                this.abilities[ability].checkStates(this.bots,this.bots[bot]);
-                
-
-               
-           }
-           
+           }  
        }
-       
        return true;
     }
+
     excecuteAbilities(sk){
         for (let ability = 0; ability < this.abilities.length; ability++) {
             
@@ -150,8 +126,7 @@ export class Swarm {
             
         }
         return true;
-        
-     }
 
+    }
 
 }

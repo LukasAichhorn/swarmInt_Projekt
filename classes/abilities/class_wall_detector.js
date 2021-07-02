@@ -19,8 +19,7 @@ export class WallDetector{
         }
         bot.states.wall = false;
     }
-    execute(){
 
-    }
+    execute(){}
 
 }

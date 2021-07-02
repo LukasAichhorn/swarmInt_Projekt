@@ -3,7 +3,6 @@ import p5 from "p5";
 export class pps{
     // 3, 180, 16, 6
 
-    
     constructor(speed,spin,radius,beta){
         this.speed = speed;
         this.spin = spin;
@@ -11,9 +10,6 @@ export class pps{
         this.beta = beta;
     };
     
-
-
-    //
     calcDist(x1,y1,x2,y2){
         let x = Math.abs(x1-x2);
         let y = Math.abs(y1-y2);
@@ -26,7 +22,6 @@ export class pps{
         }
 
     };
-
 
     checkStates(bots,bot){
         //reset neighbours
@@ -48,12 +43,12 @@ export class pps{
         });
         
     };
+
     execute(bot, sk){
     let UoD = 1;
     let nt = bot.states.UHcount + bot.states.LHcount;
     let alpha = this.spin * sk.PI/180;
     
-
         //rotate direction:
         if(bot.states.UHcount > bot.states.LHcount){
             UoD = -1;
@@ -70,7 +65,6 @@ export class pps{
         
         sk.circle(bot.position.x,bot.position.y,bot.radius);
         
-
     }
 
 }

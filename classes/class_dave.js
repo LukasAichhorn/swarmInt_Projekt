@@ -18,28 +18,18 @@ export class Dave {
             colliding: false,
             collider: null
         };
-        //this.abilities = abilities;
-
         this.direction = direction;
         let NamesListIndex = getRandomInt(0, namesList.length);
         this.name = namesList[NamesListIndex];
 
 
-        //Gewährleistung der "Uniquness" des Names mithilfe einer nachfolgenden Nummer
-
-        //letzen Buchstaben von Namen 
+        //Each robot has a unique name. If a name already exists, a sequence number is added to it. 
         let lastChar = this.name[this.name.length - 1];
-
-        //Schauen ob letzter Buchstabe eine Zahl ist
        
         if (isNaN(parseInt(lastChar))) {
-
-            //Wenn nicht wird eine 2 im namesList array ergänzt
-            namesList[NamesListIndex] += " 2";  
-
+            namesList[NamesListIndex] += " 2"; 
         }
         else {
-            //Wenn letzter Buchstabe eine Zahl ist, wird sie erhöht
             let newLastChar = parseInt(lastChar) + 1;
             namesList[NamesListIndex] = namesList[NamesListIndex].replace(lastChar, newLastChar);  
         }
@@ -49,8 +39,7 @@ export class Dave {
     }
 
     draw(sk){ 
-         
-         //set draw color to bots current color;
+        //set draw color to bots current color
         sk.fill(this.colors); 
         if(this.states.LHcount+this.states.UHcount > 0){
             sk.fill(58,0,247);
@@ -67,34 +56,28 @@ export class Dave {
         sk.circle(this.position.x, this.position.y, this.size);
         
         let s = this.name;
-        sk.textSize(10);
-        //sk.text(s,this.position.x - this.size ,this.position.y - this.size);
-        
-        
-
-        
+        sk.textSize(10); 
     }
+
     getID(){
         return this.id;
     }
+
     getColor(){
         return this.color;
     }
+
     getPosition(){
         return this.position;
     }
+
     getName(){
         return this.name;
     }
 }
-
-
-
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
 }
-
-

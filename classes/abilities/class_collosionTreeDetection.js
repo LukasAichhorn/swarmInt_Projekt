@@ -1,26 +1,21 @@
-
 import 'regenerator-runtime/runtime'
+
 export class CollisionTreeDetection{
     
-    constructor(){
-        
+    constructor(){}
+    
+    narrowDetection(bot, otherBot,posx1, posy1, posx2, posy2) {
+        let circle1 = {radius: bot.size/2, x: posx1, y: posy1};
+        let circle2 = {radius: otherBot.size/2, x: posx2, y: posy2};
 
-    };
+        let dx = circle1.x - circle2.x;
+        let dy = circle1.y - circle2.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
 
-
-narrowDetection(bot, otherBot,posx1, posy1, posx2, posy2) {
-    let circle1 = {radius: bot.size/2, x: posx1, y: posy1};
-    let circle2 = {radius: otherBot.size/2, x: posx2, y: posy2};
-
-    let dx = circle1.x - circle2.x;
-    let dy = circle1.y - circle2.y;
-    let distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance < circle1.radius + circle2.radius) {
-    return true;
+        if (distance < circle1.radius + circle2.radius) {
+        return true;
+        }
     }
-}
-
 
     treeSearch(bots){
         let allbots = [...bots];
@@ -38,7 +33,6 @@ narrowDetection(bot, otherBot,posx1, posy1, posx2, posy2) {
         
         notVisited.shift();
 
-
         allbots.forEach(bot => {
             //reset state
             
@@ -46,7 +40,6 @@ narrowDetection(bot, otherBot,posx1, posy1, posx2, posy2) {
                 notVisited.forEach(otherBot =>{
                     
                     if(this.narrowDetection(bot, otherBot, bot.position.x,bot.position.y,otherBot.position.x,otherBot.position.y)){
-                        //console.log(`${bot.name} id:${bot.id} collided with ${otherBot.name} id:${otherBot.id}`);
 
                         bot.states.colliding = true;
                         bot.states.collider = otherBot;
@@ -55,32 +48,19 @@ narrowDetection(bot, otherBot,posx1, posy1, posx2, posy2) {
                         
                         allbots.shift();
                         notVisited.shift();
-                    }
-                    else{
-                        
-
-                    }
+                    }                    
                     
-                    
-                });
-                
-                
+                });                
                 notVisited.shift();
             }
-                
-            
-            
-           
         });
     }
 
-     checkStates(bots,bot){
-          this.treeSearch(bots);
-            
+    checkStates(bots,bot){
+        this.treeSearch(bots);
     }
-    execute(){
 
-    }
+    execute(){}
         
 }//class end
 

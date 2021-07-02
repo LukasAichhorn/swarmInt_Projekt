@@ -1,4 +1,5 @@
 import {canvas_width, canvas_height} from "../../settings/constants.js";
+
 export class move {
     
     constructor(){              
@@ -24,10 +25,8 @@ export class move {
         return p5.Vector.random2D();
     }
 
-
     execute(bot, sk){
         
-
         if(bot.states.wall){
             let n =  sk.createVector(bot.direction.x,bot.direction.y);
             n.rotate(sk.HALF_PI);
